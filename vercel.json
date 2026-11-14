@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "rewrites": [
+    { "source": "/api/event-config", "destination": "/api/event-config.js" },
+    { "source": "/api/admin-auth", "destination": "/api/admin-auth.js" },
+    { "source": "/api/admin/(.*)", "destination": "/api/admin-auth.js" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
