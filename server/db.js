@@ -75,3 +75,4 @@ export async function getEventConfigCollection() {
   const { db } = await connectToDatabase();
   return db ? db.collection('event_config') : null;
 }
+

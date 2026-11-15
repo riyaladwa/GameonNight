@@ -12,7 +12,7 @@ import AdminModal from './components/AdminModal';
 export default function App() {
   return (
     <EventProvider>
-      <div className="relative min-h-screen bg-[#06030e] text-slate-100 flex flex-col font-sans selection:bg-cyan-400 selection:text-slate-950">
+      <div className="relative min-h-screen bg-brand-bg text-brand-text flex flex-col font-sans selection:bg-brand-peach selection:text-brand-text">
         
         {/* Sticky Header */}
         <Navbar />
@@ -22,20 +22,20 @@ export default function App() {
           {/* Section 1: Hero */}
           <Hero />
 
-          {/* Section 2: About the Event */}
+          {/* Section 2: About the Event (Alternate Background #F7F4FA) */}
           <AboutSection />
 
-          {/* Section 3: The Creation Challenge */}
+          {/* Section 3: The Creation Challenge (White Background #FFFFFF) */}
           <ChallengeSection />
 
-          {/* Section 4: Submission */}
+          {/* Section 4: Submission (Alternate Background #F7F4FA) */}
           <SubmissionSection />
 
-          {/* Section 5: Surveys & Event Access */}
+          {/* Section 5: Surveys & Event Access (White Background #FFFFFF) */}
           <SurveysAndAccessSection />
         </main>
 
-        {/* Section 6: Minimal Footer */}
+        {/* Section 6: Minimal Footer (Alternate Background #F7F4FA) */}
         <Footer />
 
         {/* Private Administrator Control Panel */}

@@ -7,21 +7,22 @@ export default {
   theme: {
     extend: {
       colors: {
-        arena: {
-          bg: '#080514',
-          surface: '#110a24',
-          card: 'rgba(20, 13, 40, 0.65)',
-          border: 'rgba(168, 85, 247, 0.25)',
-          hover: 'rgba(168, 85, 247, 0.15)',
-        },
-        electric: {
-          purple: '#a855f7',
-          violet: '#7c3aed',
-          cyan: '#00f5d4',
-          sky: '#00e5ff',
-          orange: '#ff6b35',
-          amber: '#ff9f1c',
-          pink: '#f43f5e'
+        brand: {
+          bg: '#FFFFFF',
+          alt: '#F7F4FA',
+          card: '#FFFFFF',
+          border: '#EAE7ED',
+          text: '#34343B',
+          muted: '#777780',
+          lavender: '#8B78B8',
+          'lavender-light': '#F3EFF9',
+          'lavender-hover': '#7C67A8',
+          sage: '#A8BFA5',
+          'sage-light': '#EFF5EF',
+          'sage-hover': '#96AD93',
+          peach: '#F5D6C6',
+          'peach-light': '#FDF6F2',
+          'peach-hover': '#ECC7B5',
         }
       },
       fontFamily: {
@@ -30,27 +31,15 @@ export default {
         mono: ['"JetBrains Mono"', 'monospace'],
       },
       boxShadow: {
-        'glow-purple': '0 0 35px -5px rgba(168, 85, 247, 0.4)',
-        'glow-cyan': '0 0 35px -5px rgba(0, 245, 212, 0.4)',
-        'glow-orange': '0 0 35px -5px rgba(255, 107, 53, 0.4)',
-        'card-glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
-      },
-      backgroundImage: {
-        'grid-pattern': "radial-gradient(rgba(168, 85, 247, 0.12) 1px, transparent 1px)",
-        'radial-glow': 'radial-gradient(circle at 50% 30%, rgba(124, 58, 237, 0.2) 0%, transparent 70%)',
-      },
-      animation: {
-        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'float': 'float 6s ease-in-out infinite',
-      },
-      keyframes: {
-        float: {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-10px)' },
-        }
+        'soft-xs': '0 1px 3px rgba(0, 0, 0, 0.04)',
+        'soft-sm': '0 2px 8px -1px rgba(139, 120, 184, 0.08), 0 1px 3px rgba(0, 0, 0, 0.03)',
+        'soft-md': '0 8px 24px -4px rgba(139, 120, 184, 0.1), 0 2px 6px rgba(0, 0, 0, 0.02)',
+        'soft-lg': '0 16px 36px -6px rgba(139, 120, 184, 0.14), 0 4px 12px rgba(0, 0, 0, 0.03)',
+        'soft-lavender': '0 4px 18px -2px rgba(139, 120, 184, 0.35)',
+        'soft-sage': '0 4px 18px -2px rgba(168, 191, 165, 0.4)',
+        'soft-peach': '0 4px 18px -2px rgba(245, 214, 198, 0.5)',
       }
     },
   },
   plugins: [],
 }
-

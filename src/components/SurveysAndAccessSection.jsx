@@ -13,7 +13,7 @@ export default function SurveysAndAccessSection() {
   const isMeetConfigured = isUrlConfigured(config.GOOGLE_MEET_URL);
 
   return (
-    <section id="surveys-access" className="py-16 sm:py-20 relative border-t border-violet-950/40">
+    <section id="surveys-access" className="py-16 sm:py-20 relative bg-brand-bg">
       
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
         
@@ -25,13 +25,13 @@ export default function SurveysAndAccessSection() {
           transition={{ duration: 0.5 }}
           className="text-center max-w-2xl mx-auto mb-10"
         >
-          <span className="text-[11px] font-mono uppercase tracking-widest text-cyan-400 block mb-1">
+          <span className="text-[11px] font-mono uppercase tracking-widest text-brand-lavender font-semibold block mb-1">
             SECTION 5
           </span>
-          <h2 className="font-display font-black text-2xl sm:text-4xl text-white uppercase tracking-tight">
+          <h2 className="font-display font-black text-2xl sm:text-4xl text-brand-text uppercase tracking-tight">
             SURVEYS & EVENT ACCESS
           </h2>
-          <p className="mt-2 text-xs sm:text-sm text-slate-300">
+          <p className="mt-2 text-xs sm:text-sm text-brand-muted">
             Access the official Google Forms and the live Google Meet room.
           </p>
         </motion.div>
@@ -44,16 +44,16 @@ export default function SurveysAndAccessSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4 }}
-            className="subtle-glass p-5 rounded-2xl border-cyan-500/20"
+            className="p-5 rounded-2xl bg-brand-lavender-light/50 border border-brand-lavender/30"
           >
-            <span className="text-[10px] font-mono uppercase font-bold text-cyan-400 tracking-wider block mb-1">
+            <span className="text-[10px] font-mono uppercase font-bold text-brand-lavender tracking-wider block mb-1">
               BEFORE THE SESSION
             </span>
-            <h3 className="font-display font-bold text-base text-white mb-2">
+            <h3 className="font-display font-bold text-base text-brand-text mb-2">
               Pre-Survey (Mandatory)
             </h3>
-            <p className="text-xs text-slate-300 leading-relaxed">
-              The <strong>Pre-Survey must be completed before attending</strong> the Google Meet session. 
+            <p className="text-xs text-brand-muted leading-relaxed">
+              The <strong className="text-brand-text">Pre-Survey must be completed before attending</strong> the Google Meet session. 
               It registers your attendance and confirms your participation eligibility.
             </p>
           </motion.div>
@@ -63,17 +63,17 @@ export default function SurveysAndAccessSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4 }}
-            className="subtle-glass p-5 rounded-2xl border-orange-500/20"
+            className="p-5 rounded-2xl bg-brand-peach-light/60 border border-brand-peach/80"
           >
-            <span className="text-[10px] font-mono uppercase font-bold text-orange-400 tracking-wider block mb-1">
+            <span className="text-[10px] font-mono uppercase font-bold text-[#A6634E] tracking-wider block mb-1">
               AFTER THE SESSION
             </span>
-            <h3 className="font-display font-bold text-base text-white mb-2">
+            <h3 className="font-display font-bold text-base text-brand-text mb-2">
               Post-Survey & Feedback
             </h3>
-            <p className="text-xs text-slate-300 leading-relaxed">
-              The <strong>Post-Survey must be completed after the event</strong>. 
-              Participants must submit their game details and public <strong>Google Docs link</strong> here for certificate verification.
+            <p className="text-xs text-brand-muted leading-relaxed">
+              The <strong className="text-brand-text">Post-Survey must be completed after the event</strong>. 
+              Participants must submit their game details and public <strong className="text-brand-text">Google Docs link</strong> here for certificate verification.
             </p>
           </motion.div>
 
@@ -91,19 +91,19 @@ export default function SurveysAndAccessSection() {
                 href={config.PRE_SURVEY_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-4 px-4 rounded-xl text-xs font-bold font-display uppercase tracking-wider btn-primary text-white flex items-center justify-center gap-2 text-center shadow-lg shadow-violet-950/40"
+                className="w-full py-4 px-4 rounded-xl text-xs font-bold font-display uppercase tracking-wider btn-primary flex items-center justify-center gap-2 text-center"
               >
                 <ClipboardList className="w-4 h-4" />
                 <span>Complete Pre-Survey</span>
                 <ExternalLink className="w-3.5 h-3.5 opacity-80" />
               </motion.a>
             ) : (
-              <div className="w-full py-4 px-4 rounded-xl subtle-glass text-xs font-mono text-slate-400 flex items-center justify-center gap-2 text-center border-violet-900/40">
-                <Clock className="w-4 h-4 text-violet-400" />
+              <div className="w-full py-4 px-4 rounded-xl bg-brand-alt border border-brand-border text-xs font-mono text-brand-muted flex items-center justify-center gap-2 text-center">
+                <Clock className="w-4 h-4 text-brand-lavender" />
                 <span>Pre-Survey link announced soon</span>
               </div>
             )}
-            <span className="text-[10px] font-mono text-slate-400 text-center mt-1.5">
+            <span className="text-[10px] font-mono text-brand-muted text-center mt-1.5">
               Complete before Google Meet
             </span>
           </div>
@@ -117,19 +117,19 @@ export default function SurveysAndAccessSection() {
                 href={config.POST_SURVEY_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-4 px-4 rounded-xl text-xs font-bold font-display uppercase tracking-wider bg-gradient-to-r from-orange-500 to-amber-500 text-slate-950 flex items-center justify-center gap-2 text-center hover:opacity-95 transition-opacity shadow-lg shadow-orange-950/40 font-extrabold"
+                className="w-full py-4 px-4 rounded-xl text-xs font-bold font-display uppercase tracking-wider btn-peach flex items-center justify-center gap-2 text-center font-extrabold"
               >
-                <CheckCircle2 className="w-4 h-4" />
+                <CheckCircle2 className="w-4 h-4 text-[#8C5542]" />
                 <span>Complete Post-Survey</span>
                 <ExternalLink className="w-3.5 h-3.5 opacity-80" />
               </motion.a>
             ) : (
-              <div className="w-full py-4 px-4 rounded-xl subtle-glass text-xs font-mono text-slate-400 flex items-center justify-center gap-2 text-center border-violet-900/40">
-                <Clock className="w-4 h-4 text-violet-400" />
+              <div className="w-full py-4 px-4 rounded-xl bg-brand-alt border border-brand-border text-xs font-mono text-brand-muted flex items-center justify-center gap-2 text-center">
+                <Clock className="w-4 h-4 text-brand-lavender" />
                 <span>Post-Survey opens after session</span>
               </div>
             )}
-            <span className="text-[10px] font-mono text-slate-400 text-center mt-1.5">
+            <span className="text-[10px] font-mono text-brand-muted text-center mt-1.5">
               Submit Google Docs link here
             </span>
           </div>
@@ -143,19 +143,19 @@ export default function SurveysAndAccessSection() {
                 href={config.GOOGLE_MEET_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-4 px-4 rounded-xl text-xs font-bold font-display uppercase tracking-wider btn-cyan text-slate-950 flex items-center justify-center gap-2 text-center shadow-lg shadow-cyan-950/40"
+                className="w-full py-4 px-4 rounded-xl text-xs font-bold font-display uppercase tracking-wider btn-sage flex items-center justify-center gap-2 text-center font-bold"
               >
                 <Video className="w-4 h-4" />
                 <span>Join Google Meet</span>
                 <ExternalLink className="w-3.5 h-3.5 opacity-80" />
               </motion.a>
             ) : (
-              <div className="w-full py-4 px-4 rounded-xl subtle-glass text-xs font-mono text-slate-400 flex items-center justify-center gap-2 text-center border-violet-900/40">
-                <Clock className="w-4 h-4 text-cyan-400" />
+              <div className="w-full py-4 px-4 rounded-xl bg-brand-alt border border-brand-border text-xs font-mono text-brand-muted flex items-center justify-center gap-2 text-center">
+                <Clock className="w-4 h-4 text-brand-sage" />
                 <span>Meet link announced soon</span>
               </div>
             )}
-            <span className="text-[10px] font-mono text-slate-400 text-center mt-1.5">
+            <span className="text-[10px] font-mono text-brand-muted text-center mt-1.5">
               Live Game On Night Room
             </span>
           </div>

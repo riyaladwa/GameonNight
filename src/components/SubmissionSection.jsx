@@ -11,21 +11,24 @@ export default function SubmissionSection() {
       title: "Generate Poster",
       desc: "Use Gemini and Nano Banana to create your game announcement poster with no violence or weapons.",
       icon: Sparkles,
-      accent: "text-cyan-400"
+      accent: "text-brand-lavender",
+      bg: "bg-brand-lavender-light"
     },
     {
       num: "02",
       title: "Prepare Google Doc",
       desc: "Structure your concept covering all seven elements and embed your final generated poster image.",
       icon: FileText,
-      accent: "text-violet-400"
+      accent: "text-brand-sage",
+      bg: "bg-brand-sage-light"
     },
     {
       num: "03",
       title: "Submit in Post-Survey",
       desc: "Paste your public Google Docs link in the official post-event feedback form to verify participation.",
       icon: Send,
-      accent: "text-orange-400"
+      accent: "text-[#C28267]",
+      bg: "bg-brand-peach-light"
     }
   ];
 
@@ -47,7 +50,7 @@ export default function SubmissionSection() {
   };
 
   return (
-    <section id="submission" className="py-16 sm:py-20 relative border-t border-violet-950/40">
+    <section id="submission" className="py-16 sm:py-20 relative bg-brand-alt border-y border-brand-border">
       
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
         
@@ -59,13 +62,13 @@ export default function SubmissionSection() {
           transition={{ duration: 0.5 }}
           className="text-center max-w-2xl mx-auto mb-10"
         >
-          <span className="text-[11px] font-mono uppercase tracking-widest text-cyan-400 block mb-1">
+          <span className="text-[11px] font-mono uppercase tracking-widest text-brand-lavender font-semibold block mb-1">
             SECTION 4
           </span>
-          <h2 className="font-display font-black text-2xl sm:text-4xl text-white uppercase tracking-tight">
+          <h2 className="font-display font-black text-2xl sm:text-4xl text-brand-text uppercase tracking-tight">
             SUBMISSION PROCESS
           </h2>
-          <p className="mt-2 text-xs sm:text-sm text-slate-300">
+          <p className="mt-2 text-xs sm:text-sm text-brand-muted">
             Submit your concept in three simple steps following the live session.
           </p>
         </motion.div>
@@ -85,19 +88,21 @@ export default function SubmissionSection() {
                 key={s.num}
                 variants={itemVariants}
                 whileHover={prefersReducedMotion ? {} : { y: -4, transition: { duration: 0.2 } }}
-                className="subtle-glass p-5 rounded-xl flex flex-col justify-between hover:border-violet-600/40 transition-shadow hover:shadow-lg hover:shadow-violet-500/10"
+                className="light-card p-5 rounded-2xl flex flex-col justify-between hover:border-brand-lavender/50 transition-all hover:shadow-soft-md group"
               >
                 <div>
                   <div className="flex items-center justify-between mb-3">
-                    <span className="font-mono text-xs font-bold text-slate-500">
+                    <span className="font-mono text-xs font-bold text-brand-muted">
                       STEP {s.num}
                     </span>
-                    <Icon className={`w-5 h-5 ${s.accent}`} />
+                    <div className={`w-8 h-8 rounded-lg ${s.bg} flex items-center justify-center`}>
+                      <Icon className={`w-4 h-4 ${s.accent}`} />
+                    </div>
                   </div>
-                  <h3 className="font-display font-bold text-sm sm:text-base text-white mb-1.5">
+                  <h3 className="font-display font-bold text-sm sm:text-base text-brand-text mb-1.5">
                     {s.title}
                   </h3>
-                  <p className="text-xs text-slate-400 leading-relaxed">
+                  <p className="text-xs text-brand-muted leading-relaxed">
                     {s.desc}
                   </p>
                 </div>
@@ -112,14 +117,14 @@ export default function SubmissionSection() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
-          className="p-4 rounded-xl subtle-glass border border-orange-500/30 flex items-start gap-3 text-xs text-slate-300 max-w-3xl mx-auto shadow-md shadow-orange-950/20"
+          className="p-4 rounded-xl bg-white border border-brand-peach/80 flex items-start gap-3 text-xs text-brand-text max-w-3xl mx-auto shadow-soft-xs"
         >
-          <AlertCircle className="w-4 h-4 text-orange-400 shrink-0 mt-0.5" />
+          <AlertCircle className="w-4 h-4 text-[#C28267] shrink-0 mt-0.5" />
           <div>
-            <span className="font-semibold text-white block">
+            <span className="font-semibold text-brand-text block">
               Sharing Permission Reminder:
             </span>
-            <p className="text-slate-400 text-[11px] mt-0.5">
+            <p className="text-brand-muted text-[11px] mt-0.5">
               Set your Google Docs link to <strong>"Anyone with the link – Viewer"</strong> and test it in an incognito window before submitting. 
               Submissions that cannot be viewed by judges cannot be verified for certificates.
             </p>

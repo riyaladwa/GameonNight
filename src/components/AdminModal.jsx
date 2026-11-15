@@ -143,7 +143,7 @@ export default function AdminModal() {
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/35 backdrop-blur-sm">
         
         {/* Backdrop click to close */}
         <motion.div 
@@ -160,20 +160,20 @@ export default function AdminModal() {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 15 }}
           transition={{ duration: 0.2, ease: 'easeOut' }}
-          className="relative w-full max-w-2xl max-h-[90vh] bg-[#0c071d] border border-violet-500/30 rounded-2xl shadow-2xl overflow-hidden flex flex-col z-10"
+          className="relative w-full max-w-2xl max-h-[90vh] bg-white border border-brand-border rounded-2xl shadow-soft-lg overflow-hidden flex flex-col z-10"
         >
           {/* Top Bar */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-violet-900/40 bg-[#080414]">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-brand-border bg-brand-alt">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-violet-950 border border-violet-700/50 flex items-center justify-center text-cyan-400">
+              <div className="w-8 h-8 rounded-lg bg-brand-lavender-light border border-brand-lavender/30 flex items-center justify-center text-brand-lavender">
                 <ShieldCheck className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="font-display font-bold text-sm text-white">
+                <h3 className="font-display font-bold text-sm text-brand-text">
                   Event Administration Panel
                 </h3>
-                <div className="flex items-center gap-2 text-[10px] font-mono text-slate-400">
-                  <span className={`w-1.5 h-1.5 rounded-full ${isLiveDb ? 'bg-emerald-400' : 'bg-amber-400'}`} />
+                <div className="flex items-center gap-2 text-[10px] font-mono text-brand-muted">
+                  <span className={`w-1.5 h-1.5 rounded-full ${isLiveDb ? 'bg-brand-sage' : 'bg-[#D98A6C]'}`} />
                   <span>{isLiveDb ? 'Connected to MongoDB' : 'Local Fallback Mode'}</span>
                 </div>
               </div>
@@ -183,7 +183,7 @@ export default function AdminModal() {
               {adminToken && (
                 <button
                   onClick={logoutAdmin}
-                  className="px-2.5 py-1 text-[11px] font-mono text-rose-300 hover:text-rose-200 bg-rose-950/40 border border-rose-800/40 rounded-lg flex items-center gap-1"
+                  className="px-2.5 py-1 text-[11px] font-mono text-[#A6634E] hover:text-[#8C5542] bg-brand-peach-light border border-brand-peach/80 rounded-lg flex items-center gap-1 transition-colors"
                 >
                   <LogOut className="w-3 h-3" />
                   <span>Logout</span>
@@ -191,7 +191,7 @@ export default function AdminModal() {
               )}
               <button
                 onClick={() => setIsAdminModalOpen(false)}
-                className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-violet-900/40 transition-colors"
+                className="p-1.5 text-brand-muted hover:text-brand-text rounded-lg hover:bg-brand-alt transition-colors"
                 aria-label="Close modal"
               >
                 <X className="w-5 h-5" />
@@ -200,24 +200,24 @@ export default function AdminModal() {
           </div>
 
           {/* Modal Content */}
-          <div className="p-6 overflow-y-auto flex-1">
+          <div className="p-6 overflow-y-auto flex-1 bg-white">
             {!adminToken ? (
               /* LOGIN VIEW */
               <div className="max-w-sm mx-auto py-6">
                 <div className="text-center mb-6">
-                  <div className="w-12 h-12 mx-auto rounded-xl bg-violet-900/30 border border-violet-500/40 flex items-center justify-center text-cyan-400 mb-3">
+                  <div className="w-12 h-12 mx-auto rounded-xl bg-brand-lavender-light border border-brand-lavender/30 flex items-center justify-center text-brand-lavender mb-3 shadow-soft-xs">
                     <Lock className="w-6 h-6" />
                   </div>
-                  <h4 className="font-display font-extrabold text-base text-white">
+                  <h4 className="font-display font-extrabold text-base text-brand-text">
                     Administrator Authentication
                   </h4>
-                  <p className="text-xs text-slate-400 mt-1">
+                  <p className="text-xs text-brand-muted mt-1">
                     Enter your credentials to update live event details, URLs, and schedules.
                   </p>
                 </div>
 
                 {loginError && (
-                  <div className="p-3 mb-4 rounded-xl bg-rose-950/50 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2">
+                  <div className="p-3 mb-4 rounded-xl bg-brand-peach-light border border-brand-peach text-[#A6634E] text-xs flex items-center gap-2">
                     <AlertCircle className="w-4 h-4 shrink-0" />
                     <span>{loginError}</span>
                   </div>
@@ -225,28 +225,28 @@ export default function AdminModal() {
 
                 <form onSubmit={handleLogin} className="space-y-4">
                   <div>
-                    <label className="block text-xs font-mono text-slate-300 mb-1">
+                    <label className="block text-xs font-mono text-brand-text font-medium mb-1">
                       Username
                     </label>
                     <input
                       type="text"
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-black/50 border border-violet-900/60 text-white text-xs font-mono focus:border-cyan-400 focus:outline-none"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-brand-alt border border-brand-border text-brand-text text-xs font-mono focus:border-brand-lavender focus:bg-white focus:outline-none transition-colors"
                       placeholder="admin"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono text-slate-300 mb-1">
+                    <label className="block text-xs font-mono text-brand-text font-medium mb-1">
                       Password
                     </label>
                     <input
                       type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-black/50 border border-violet-900/60 text-white text-xs font-mono focus:border-cyan-400 focus:outline-none"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-brand-alt border border-brand-border text-brand-text text-xs font-mono focus:border-brand-lavender focus:bg-white focus:outline-none transition-colors"
                       placeholder="••••••••"
                       required
                     />
@@ -255,14 +255,14 @@ export default function AdminModal() {
                   <button
                     type="submit"
                     disabled={isLoggingIn}
-                    className="w-full py-2.5 rounded-xl text-xs font-bold font-display uppercase tracking-wider btn-primary text-white flex items-center justify-center gap-2 disabled:opacity-50"
+                    className="w-full py-2.5 rounded-xl text-xs font-bold font-display uppercase tracking-wider btn-primary flex items-center justify-center gap-2 disabled:opacity-50"
                   >
                     {isLoggingIn ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Lock className="w-3.5 h-3.5" />}
                     <span>{isLoggingIn ? 'Authenticating...' : 'Sign In as Admin'}</span>
                   </button>
 
-                  <p className="text-[10px] text-center font-mono text-slate-500 pt-2">
-                    Default dev password: <code className="text-violet-300">gsa_admin_2026</code>
+                  <p className="text-[10px] text-center font-mono text-brand-muted pt-2">
+                    Default dev password: <code className="text-brand-lavender font-semibold">gsa_admin_2026</code>
                   </p>
                 </form>
               </div>
@@ -271,14 +271,14 @@ export default function AdminModal() {
               <form onSubmit={handleSave} className="space-y-6">
                 
                 {/* Tabs */}
-                <div className="flex items-center gap-1 border-b border-violet-900/40 pb-2">
+                <div className="flex items-center gap-1 border-b border-brand-border pb-2">
                   <button
                     type="button"
                     onClick={() => setActiveTab('schedule')}
                     className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-colors ${
                       activeTab === 'schedule'
-                        ? 'bg-violet-900/60 text-cyan-400 border border-violet-700/50'
-                        : 'text-slate-400 hover:text-slate-200'
+                        ? 'bg-brand-lavender-light text-brand-lavender border border-brand-lavender/30 font-semibold'
+                        : 'text-brand-muted hover:text-brand-text'
                     }`}
                   >
                     1. Schedule & Venue
@@ -288,8 +288,8 @@ export default function AdminModal() {
                     onClick={() => setActiveTab('links')}
                     className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-colors ${
                       activeTab === 'links'
-                        ? 'bg-violet-900/60 text-cyan-400 border border-violet-700/50'
-                        : 'text-slate-400 hover:text-slate-200'
+                        ? 'bg-brand-lavender-light text-brand-lavender border border-brand-lavender/30 font-semibold'
+                        : 'text-brand-muted hover:text-brand-text'
                     }`}
                   >
                     2. Official URLs
@@ -299,8 +299,8 @@ export default function AdminModal() {
                     onClick={() => setActiveTab('identity')}
                     className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-colors ${
                       activeTab === 'identity'
-                        ? 'bg-violet-900/60 text-cyan-400 border border-violet-700/50'
-                        : 'text-slate-400 hover:text-slate-200'
+                        ? 'bg-brand-lavender-light text-brand-lavender border border-brand-lavender/30 font-semibold'
+                        : 'text-brand-muted hover:text-brand-text'
                     }`}
                   >
                     3. Identity & Host
@@ -310,10 +310,10 @@ export default function AdminModal() {
                 {saveStatus && (
                   <div className={`p-3 rounded-xl text-xs flex items-center gap-2 ${
                     saveStatus.type === 'success' 
-                      ? 'bg-emerald-950/60 border border-emerald-500/40 text-emerald-300' 
-                      : 'bg-rose-950/60 border border-rose-500/40 text-rose-300'
+                      ? 'bg-brand-sage-light border border-brand-sage text-[#4E6B4A]' 
+                      : 'bg-brand-peach-light border border-brand-peach text-[#A6634E]'
                   }`}>
-                    {saveStatus.type === 'success' ? <CheckCircle2 className="w-4 h-4 shrink-0" /> : <AlertCircle className="w-4 h-4 shrink-0" />}
+                    {saveStatus.type === 'success' ? <CheckCircle2 className="w-4 h-4 shrink-0 text-brand-sage" /> : <AlertCircle className="w-4 h-4 shrink-0" />}
                     <span>{saveStatus.message}</span>
                   </div>
                 )}
@@ -323,27 +323,27 @@ export default function AdminModal() {
                   <div className="space-y-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-xs font-mono text-slate-300 mb-1">
+                        <label className="block text-xs font-mono text-brand-text font-medium mb-1">
                           Event Date (Shown when confirmed)
                         </label>
                         <input
                           type="text"
                           value={formData.EVENT_DATE}
                           onChange={(e) => setFormData({ ...formData, EVENT_DATE: e.target.value })}
-                          className="w-full px-3 py-2 rounded-xl bg-black/50 border border-violet-900/60 text-white text-xs font-mono focus:border-cyan-400 focus:outline-none"
+                          className="w-full px-3 py-2 rounded-xl bg-brand-alt border border-brand-border text-brand-text text-xs font-mono focus:border-brand-lavender focus:bg-white focus:outline-none transition-colors"
                           placeholder="e.g. Saturday, November 28, 2026"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-xs font-mono text-slate-300 mb-1">
+                        <label className="block text-xs font-mono text-brand-text font-medium mb-1">
                           Event Time (Shown when confirmed)
                         </label>
                         <input
                           type="text"
                           value={formData.EVENT_TIME}
                           onChange={(e) => setFormData({ ...formData, EVENT_TIME: e.target.value })}
-                          className="w-full px-3 py-2 rounded-xl bg-black/50 border border-violet-900/60 text-white text-xs font-mono focus:border-cyan-400 focus:outline-none"
+                          className="w-full px-3 py-2 rounded-xl bg-brand-alt border border-brand-border text-brand-text text-xs font-mono focus:border-brand-lavender focus:bg-white focus:outline-none transition-colors"
                           placeholder="e.g. 6:00 PM – 8:00 PM IST"
                         />
                       </div>
@@ -351,41 +351,41 @@ export default function AdminModal() {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-xs font-mono text-slate-300 mb-1">
+                        <label className="block text-xs font-mono text-brand-text font-medium mb-1">
                           Event Mode
                         </label>
                         <input
                           type="text"
                           value={formData.EVENT_MODE}
                           onChange={(e) => setFormData({ ...formData, EVENT_MODE: e.target.value })}
-                          className="w-full px-3 py-2 rounded-xl bg-black/50 border border-violet-900/60 text-white text-xs font-mono focus:border-cyan-400 focus:outline-none"
+                          className="w-full px-3 py-2 rounded-xl bg-brand-alt border border-brand-border text-brand-text text-xs font-mono focus:border-brand-lavender focus:bg-white focus:outline-none transition-colors"
                           placeholder="Virtual / Online via Google Meet"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-xs font-mono text-slate-300 mb-1">
+                        <label className="block text-xs font-mono text-brand-text font-medium mb-1">
                           Duration
                         </label>
                         <input
                           type="text"
                           value={formData.EVENT_DURATION}
                           onChange={(e) => setFormData({ ...formData, EVENT_DURATION: e.target.value })}
-                          className="w-full px-3 py-2 rounded-xl bg-black/50 border border-violet-900/60 text-white text-xs font-mono focus:border-cyan-400 focus:outline-none"
+                          className="w-full px-3 py-2 rounded-xl bg-brand-alt border border-brand-border text-brand-text text-xs font-mono focus:border-brand-lavender focus:bg-white focus:outline-none transition-colors"
                           placeholder="2 Hours (60s Pitch per participant)"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-xs font-mono text-slate-300 mb-1">
+                      <label className="block text-xs font-mono text-brand-text font-medium mb-1">
                         Top Announcement Badge
                       </label>
                       <input
                         type="text"
                         value={formData.announcementBadge}
                         onChange={(e) => setFormData({ ...formData, announcementBadge: e.target.value })}
-                        className="w-full px-3 py-2 rounded-xl bg-black/50 border border-violet-900/60 text-white text-xs font-mono focus:border-cyan-400 focus:outline-none"
+                        className="w-full px-3 py-2 rounded-xl bg-brand-alt border border-brand-border text-brand-text text-xs font-mono focus:border-brand-lavender focus:bg-white focus:outline-none transition-colors"
                         placeholder="FREE ENTRY • NATIONAL PIXEL CHANCE • OFFICIAL CERTIFICATES"
                       />
                     </div>
@@ -396,58 +396,58 @@ export default function AdminModal() {
                 {activeTab === 'links' && (
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-xs font-mono text-slate-300 mb-1">
+                      <label className="block text-xs font-mono text-brand-text font-medium mb-1">
                         Official Google Meet URL (Leave empty if unannounced)
                       </label>
                       <input
                         type="url"
                         value={formData.GOOGLE_MEET_URL}
                         onChange={(e) => setFormData({ ...formData, GOOGLE_MEET_URL: e.target.value })}
-                        className="w-full px-3 py-2 rounded-xl bg-black/50 border border-violet-900/60 text-white text-xs font-mono focus:border-cyan-400 focus:outline-none"
+                        className="w-full px-3 py-2 rounded-xl bg-brand-alt border border-brand-border text-brand-text text-xs font-mono focus:border-brand-lavender focus:bg-white focus:outline-none transition-colors"
                         placeholder="https://meet.google.com/xyz-abcd-efg"
                       />
-                      <span className="text-[10px] text-slate-400 mt-0.5 block">
+                      <span className="text-[10px] text-brand-muted mt-0.5 block">
                         If left blank, "Join Meet" buttons safely show "Announced soon".
                       </span>
                     </div>
 
                     <div>
-                      <label className="block text-xs font-mono text-slate-300 mb-1">
+                      <label className="block text-xs font-mono text-brand-text font-medium mb-1">
                         Pre-Event Survey URL (Mandatory before Meet)
                       </label>
                       <input
                         type="url"
                         value={formData.PRE_SURVEY_URL}
                         onChange={(e) => setFormData({ ...formData, PRE_SURVEY_URL: e.target.value })}
-                        className="w-full px-3 py-2 rounded-xl bg-black/50 border border-violet-900/60 text-white text-xs font-mono focus:border-cyan-400 focus:outline-none"
+                        className="w-full px-3 py-2 rounded-xl bg-brand-alt border border-brand-border text-brand-text text-xs font-mono focus:border-brand-lavender focus:bg-white focus:outline-none transition-colors"
                         placeholder="https://producttrialsurvey.geministudentambassador.com/"
                         required
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-mono text-slate-300 mb-1">
+                      <label className="block text-xs font-mono text-brand-text font-medium mb-1">
                         Post-Event Feedback & Submission Form URL
                       </label>
                       <input
                         type="url"
                         value={formData.POST_SURVEY_URL}
                         onChange={(e) => setFormData({ ...formData, POST_SURVEY_URL: e.target.value })}
-                        className="w-full px-3 py-2 rounded-xl bg-black/50 border border-violet-900/60 text-white text-xs font-mono focus:border-cyan-400 focus:outline-none"
+                        className="w-full px-3 py-2 rounded-xl bg-brand-alt border border-brand-border text-brand-text text-xs font-mono focus:border-brand-lavender focus:bg-white focus:outline-none transition-colors"
                         placeholder="https://producttrialfeedback.geministudentambassador.com/"
                         required
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-mono text-slate-300 mb-1">
+                      <label className="block text-xs font-mono text-brand-text font-medium mb-1">
                         Event Guidelines Document URL (Optional)
                       </label>
                       <input
                         type="url"
                         value={formData.EVENT_GUIDELINES_URL}
                         onChange={(e) => setFormData({ ...formData, EVENT_GUIDELINES_URL: e.target.value })}
-                        className="w-full px-3 py-2 rounded-xl bg-black/50 border border-violet-900/60 text-white text-xs font-mono focus:border-cyan-400 focus:outline-none"
+                        className="w-full px-3 py-2 rounded-xl bg-brand-alt border border-brand-border text-brand-text text-xs font-mono focus:border-brand-lavender focus:bg-white focus:outline-none transition-colors"
                         placeholder="https://docs.google.com/..."
                       />
                     </div>
@@ -459,64 +459,64 @@ export default function AdminModal() {
                   <div className="space-y-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-xs font-mono text-slate-300 mb-1">
+                        <label className="block text-xs font-mono text-brand-text font-medium mb-1">
                           Event Name
                         </label>
                         <input
                           type="text"
                           value={formData.EVENT_NAME}
                           onChange={(e) => setFormData({ ...formData, EVENT_NAME: e.target.value })}
-                          className="w-full px-3 py-2 rounded-xl bg-black/50 border border-violet-900/60 text-white text-xs font-mono focus:border-cyan-400 focus:outline-none"
+                          className="w-full px-3 py-2 rounded-xl bg-brand-alt border border-brand-border text-brand-text text-xs font-mono focus:border-brand-lavender focus:bg-white focus:outline-none transition-colors"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-xs font-mono text-slate-300 mb-1">
+                        <label className="block text-xs font-mono text-brand-text font-medium mb-1">
                           Event Title
                         </label>
                         <input
                           type="text"
                           value={formData.EVENT_TITLE}
                           onChange={(e) => setFormData({ ...formData, EVENT_TITLE: e.target.value })}
-                          className="w-full px-3 py-2 rounded-xl bg-black/50 border border-violet-900/60 text-white text-xs font-mono focus:border-cyan-400 focus:outline-none"
+                          className="w-full px-3 py-2 rounded-xl bg-brand-alt border border-brand-border text-brand-text text-xs font-mono focus:border-brand-lavender focus:bg-white focus:outline-none transition-colors"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-xs font-mono text-slate-300 mb-1">
+                      <label className="block text-xs font-mono text-brand-text font-medium mb-1">
                         Tagline
                       </label>
                       <input
                         type="text"
                         value={formData.TAGLINE}
                         onChange={(e) => setFormData({ ...formData, TAGLINE: e.target.value })}
-                        className="w-full px-3 py-2 rounded-xl bg-black/50 border border-violet-900/60 text-white text-xs font-mono focus:border-cyan-400 focus:outline-none"
+                        className="w-full px-3 py-2 rounded-xl bg-brand-alt border border-brand-border text-brand-text text-xs font-mono focus:border-brand-lavender focus:bg-white focus:outline-none transition-colors"
                       />
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-xs font-mono text-slate-300 mb-1">
+                        <label className="block text-xs font-mono text-brand-text font-medium mb-1">
                           Host Name
                         </label>
                         <input
                           type="text"
                           value={formData.HOST_NAME}
                           onChange={(e) => setFormData({ ...formData, HOST_NAME: e.target.value })}
-                          className="w-full px-3 py-2 rounded-xl bg-black/50 border border-violet-900/60 text-white text-xs font-mono focus:border-cyan-400 focus:outline-none"
+                          className="w-full px-3 py-2 rounded-xl bg-brand-alt border border-brand-border text-brand-text text-xs font-mono focus:border-brand-lavender focus:bg-white focus:outline-none transition-colors"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-xs font-mono text-slate-300 mb-1">
+                        <label className="block text-xs font-mono text-brand-text font-medium mb-1">
                           Host Contact Email (Optional)
                         </label>
                         <input
                           type="email"
                           value={formData.HOST_CONTACT}
                           onChange={(e) => setFormData({ ...formData, HOST_CONTACT: e.target.value })}
-                          className="w-full px-3 py-2 rounded-xl bg-black/50 border border-violet-900/60 text-white text-xs font-mono focus:border-cyan-400 focus:outline-none"
+                          className="w-full px-3 py-2 rounded-xl bg-brand-alt border border-brand-border text-brand-text text-xs font-mono focus:border-brand-lavender focus:bg-white focus:outline-none transition-colors"
                           placeholder="gsa.lead@college.edu"
                         />
                       </div>
@@ -525,14 +525,14 @@ export default function AdminModal() {
                 )}
 
                 {/* Submit Bar */}
-                <div className="flex items-center justify-between pt-4 border-t border-violet-900/40">
-                  <span className="text-[11px] font-mono text-slate-400">
-                    Saves directly to MongoDB collection <code className="text-cyan-400">event_config</code>
+                <div className="flex items-center justify-between pt-4 border-t border-brand-border">
+                  <span className="text-[11px] font-mono text-brand-muted">
+                    Saves directly to MongoDB collection <code className="text-brand-lavender font-semibold">event_config</code>
                   </span>
                   <button
                     type="submit"
                     disabled={isSaving}
-                    className="px-5 py-2.5 rounded-xl text-xs font-bold font-display uppercase tracking-wider btn-primary text-white flex items-center gap-2 disabled:opacity-50"
+                    className="px-5 py-2.5 rounded-xl text-xs font-bold font-display uppercase tracking-wider btn-primary flex items-center gap-2 disabled:opacity-50"
                   >
                     {isSaving ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
                     <span>{isSaving ? 'Saving...' : 'Save Changes'}</span>

@@ -30,49 +30,56 @@ export default function ChallengeSection() {
       title: "Game Name",
       desc: "A catchy, original, and memorable title reflecting your game's world.",
       icon: Gamepad2,
-      accent: "text-violet-400"
+      accent: "text-brand-lavender",
+      bg: "bg-brand-lavender-light"
     },
     {
       num: "02",
       title: "Tagline",
       desc: "A short, exciting phrase (5–10 words) that captures the emotion or action.",
       icon: Tag,
-      accent: "text-cyan-400"
+      accent: "text-brand-sage",
+      bg: "bg-brand-sage-light"
     },
     {
       num: "03",
       title: "Mission",
       desc: "The specific, achievable objective. Avoid vague tropes—state clear win goals.",
       icon: Target,
-      accent: "text-orange-400"
+      accent: "text-[#C28267]",
+      bg: "bg-brand-peach-light"
     },
     {
       num: "04",
       title: "Enemies / Challenges",
       desc: "Non-violent obstacles: gravity shifts, weather puzzles, timers, or rivals.",
       icon: ShieldAlert,
-      accent: "text-pink-400"
+      accent: "text-[#C47D8A]",
+      bg: "bg-[#FDF0F2]"
     },
     {
       num: "05",
       title: "Characters",
       desc: "Protagonists and companions: unique visual styles, roles, and personalities.",
       icon: Users,
-      accent: "text-indigo-400"
+      accent: "text-brand-lavender",
+      bg: "bg-brand-lavender-light"
     },
     {
       num: "06",
       title: "Game Mode",
       desc: "Single-player adventure, 2-player co-op puzzle, strategy, or time trial.",
       icon: Sliders,
-      accent: "text-emerald-400"
+      accent: "text-brand-sage",
+      bg: "bg-brand-sage-light"
     },
     {
       num: "07",
       title: "Why Players Would Jump In",
       desc: "The core emotional hook, unique mechanic, and reason it's irresistible to play.",
       icon: Flame,
-      accent: "text-amber-400"
+      accent: "text-[#C28267]",
+      bg: "bg-brand-peach-light"
     }
   ];
 
@@ -138,7 +145,7 @@ Game Name: [Title] | Tagline: [Tagline]
   };
 
   return (
-    <section id="challenge" className="py-16 sm:py-20 relative border-t border-violet-950/40">
+    <section id="challenge" className="py-16 sm:py-20 relative bg-brand-bg">
       
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
         
@@ -150,13 +157,13 @@ Game Name: [Title] | Tagline: [Tagline]
           transition={{ duration: 0.5 }}
           className="text-center max-w-2xl mx-auto mb-10"
         >
-          <span className="text-[11px] font-mono uppercase tracking-widest text-cyan-400 block mb-1">
+          <span className="text-[11px] font-mono uppercase tracking-widest text-brand-lavender font-semibold block mb-1">
             SECTION 3
           </span>
-          <h2 className="font-display font-black text-2xl sm:text-4xl text-white uppercase tracking-tight">
+          <h2 className="font-display font-black text-2xl sm:text-4xl text-brand-text uppercase tracking-tight">
             THE CREATION CHALLENGE
           </h2>
-          <p className="mt-2 text-xs sm:text-sm text-slate-300">
+          <p className="mt-2 text-xs sm:text-sm text-brand-muted">
             Every submitted game concept must clearly define these 7 required elements.
           </p>
         </motion.div>
@@ -176,19 +183,19 @@ Game Name: [Title] | Tagline: [Tagline]
                 key={el.num}
                 variants={itemVariants}
                 whileHover={prefersReducedMotion ? {} : { y: -3, transition: { duration: 0.2 } }}
-                className="subtle-glass p-4 rounded-xl flex items-start gap-3 hover:border-violet-600/40 transition-shadow hover:shadow-md hover:shadow-violet-500/10 group"
+                className="light-card p-4 rounded-xl flex items-start gap-3 hover:border-brand-lavender/50 transition-all hover:shadow-soft-sm group"
               >
-                <div className="w-8 h-8 rounded-lg bg-violet-950/70 border border-violet-800/40 flex items-center justify-center shrink-0 mt-0.5 group-hover:scale-105 transition-transform">
+                <div className={`w-8 h-8 rounded-lg ${el.bg} flex items-center justify-center shrink-0 mt-0.5 group-hover:scale-105 transition-transform`}>
                   <Icon className={`w-4 h-4 ${el.accent}`} />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="font-mono text-[10px] text-slate-500 font-bold">{el.num}</span>
-                    <h3 className="font-display font-bold text-xs sm:text-sm text-white">
+                    <span className="font-mono text-[10px] text-brand-muted font-bold">{el.num}</span>
+                    <h3 className="font-display font-bold text-xs sm:text-sm text-brand-text">
                       {el.title}
                     </h3>
                   </div>
-                  <p className="text-[11px] text-slate-400 mt-0.5 leading-relaxed">
+                  <p className="text-[11px] text-brand-muted mt-0.5 leading-relaxed">
                     {el.desc}
                   </p>
                 </div>
@@ -199,16 +206,16 @@ Game Name: [Title] | Tagline: [Tagline]
           {/* Compact Creative Guidelines Box */}
           <motion.div 
             variants={itemVariants}
-            className="subtle-glass p-4 rounded-xl border-orange-500/25 sm:col-span-2 lg:col-span-2 flex flex-col justify-center"
+            className="p-4 rounded-xl border border-brand-border bg-brand-alt sm:col-span-2 lg:col-span-2 flex flex-col justify-center"
           >
-            <span className="text-[10px] font-mono uppercase font-bold text-orange-400 tracking-wider mb-2">
+            <span className="text-[10px] font-mono uppercase font-bold text-brand-lavender tracking-wider mb-2">
               COMPACT CREATIVE GUIDELINES
             </span>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1.5 text-xs text-slate-300">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1.5 text-xs text-brand-text">
               {guidelines.map((g, i) => (
                 <div key={i} className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-orange-400 shrink-0" />
-                  <span className="text-[11px]">{g}</span>
+                  <CheckCircle2 className="w-3.5 h-3.5 text-brand-sage shrink-0" />
+                  <span className="text-[11px] text-brand-muted">{g}</span>
                 </div>
               ))}
             </div>
@@ -221,10 +228,10 @@ Game Name: [Title] | Tagline: [Tagline]
             whileHover={prefersReducedMotion ? {} : { scale: 1.02 }}
             whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
             onClick={() => setIsGuideOpen(!isGuideOpen)}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-display font-bold text-xs uppercase tracking-wider btn-secondary text-cyan-400 hover:text-white"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-display font-bold text-xs uppercase tracking-wider btn-secondary"
           >
             <span>{isGuideOpen ? "Hide Creation Guidelines" : "View Creation Guidelines"}</span>
-            {isGuideOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            {isGuideOpen ? <ChevronUp className="w-4 h-4 text-brand-lavender" /> : <ChevronDown className="w-4 h-4 text-brand-lavender" />}
           </motion.button>
         </div>
 
@@ -238,25 +245,25 @@ Game Name: [Title] | Tagline: [Tagline]
               transition={{ duration: 0.3, ease: 'easeInOut' }}
               className="overflow-hidden mt-8"
             >
-              <div className="p-6 rounded-2xl subtle-glass border border-cyan-500/30 shadow-xl shadow-cyan-950/20">
+              <div className="p-6 rounded-2xl bg-brand-alt border border-brand-border shadow-soft-sm">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   
                   {/* Ready Gemini Prompt */}
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-xs font-bold font-display uppercase tracking-wider text-cyan-400 flex items-center gap-1.5">
+                      <span className="text-xs font-bold font-display uppercase tracking-wider text-brand-lavender flex items-center gap-1.5">
                         <Sparkles className="w-3.5 h-3.5" />
                         <span>Sample Gemini Nano Banana Prompt</span>
                       </span>
                       <button
                         onClick={handleCopyPrompt}
-                        className="text-[11px] font-mono text-slate-300 hover:text-cyan-400 flex items-center gap-1 transition-colors"
+                        className="text-[11px] font-mono text-brand-muted hover:text-brand-lavender flex items-center gap-1 transition-colors"
                       >
-                        {copiedPrompt ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                        {copiedPrompt ? <Check className="w-3.5 h-3.5 text-brand-sage" /> : <Copy className="w-3.5 h-3.5" />}
                         <span>{copiedPrompt ? "Copied!" : "Copy Prompt"}</span>
                       </button>
                     </div>
-                    <div className="p-3.5 rounded-xl bg-black/60 border border-violet-900/40 text-[11px] font-mono text-slate-300 leading-relaxed max-h-48 overflow-y-auto select-all">
+                    <div className="p-3.5 rounded-xl bg-white border border-brand-border text-[11px] font-mono text-brand-text leading-relaxed max-h-48 overflow-y-auto select-all shadow-soft-xs">
                       {samplePrompt}
                     </div>
                   </div>
@@ -264,19 +271,19 @@ Game Name: [Title] | Tagline: [Tagline]
                   {/* Ready Google Docs Template */}
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-xs font-bold font-display uppercase tracking-wider text-violet-300 flex items-center gap-1.5">
+                      <span className="text-xs font-bold font-display uppercase tracking-wider text-brand-lavender flex items-center gap-1.5">
                         <FileText className="w-3.5 h-3.5" />
                         <span>Google Docs Quick Template</span>
                       </span>
                       <button
                         onClick={handleCopyTemplate}
-                        className="text-[11px] font-mono text-slate-300 hover:text-cyan-400 flex items-center gap-1 transition-colors"
+                        className="text-[11px] font-mono text-brand-muted hover:text-brand-lavender flex items-center gap-1 transition-colors"
                       >
-                        {copiedTemplate ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                        {copiedTemplate ? <Check className="w-3.5 h-3.5 text-brand-sage" /> : <Copy className="w-3.5 h-3.5" />}
                         <span>{copiedTemplate ? "Copied!" : "Copy Template"}</span>
                       </button>
                     </div>
-                    <div className="p-3.5 rounded-xl bg-black/60 border border-violet-900/40 text-[11px] font-mono text-slate-300 leading-relaxed max-h-48 overflow-y-auto select-all">
+                    <div className="p-3.5 rounded-xl bg-white border border-brand-border text-[11px] font-mono text-brand-text leading-relaxed max-h-48 overflow-y-auto select-all shadow-soft-xs">
                       {docTemplate}
                     </div>
                   </div>
