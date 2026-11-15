@@ -121,28 +121,31 @@ Organizers have a secure, private dashboard built right into the platform:
 │  Sticky Navbar: Brand Logo, Section Links, GSA Admin Trigger │
 ├─────────────────────────────────────────────────────────────┤
 │  SECTION 1: HERO (#FFFFFF)                                  │
-│  - Event title, category, and tagline                       │
+│  - Event branding, short tagline, schedule, and primary CTAs │
 │  - 4 Pastel Highlight Cards (Free, Pixel Chance, Certs)     │
-│  - Primary Action Buttons (Explore Challenge, Join Arena)   │
 ├─────────────────────────────────────────────────────────────┤
-│  SECTION 2: ABOUT THE EVENT (#F7F4FA)                       │
-│  - Zero-coding ideathon philosophy                          │
-│  - 4-Step Process: Imagine -> Poster -> Document -> Pitch   │
+│  SECTION 2: ABOUT (#F7F4FA)                                 │
+│  - Concise introduction to Game On Night                    │
+│  - 3 Core pillars & Ideathon vs Hackathon distinction       │
 ├─────────────────────────────────────────────────────────────┤
-│  SECTION 3: THE CREATION CHALLENGE (#FFFFFF)                │
-│  - 7 Required Elements grid                                 │
-│  - Expandable Creation Guide (Gemini prompt & Doc template) │
+│  SECTION 3: HOW TO PARTICIPATE (#FFFFFF)                    │
+│  - Simple 3-Step Process (Imagine -> Design -> Pitch)       │
+│  - Google Docs sharing permission reminder                  │
 ├─────────────────────────────────────────────────────────────┤
-│  SECTION 4: SUBMISSION WORKFLOW (#F7F4FA)                   │
-│  - 3 Submission Milestones (Generate -> Prepare -> Submit)  │
-│  - Public Google Docs sharing reminder alert                │
+│  SECTION 4: GAME CREATION GUIDE (#F7F4FA)                   │
+│  - 7 Mandatory Document Elements & non-violent rule         │
+│  - 60-Second Pitch Blueprint timeline                       │
+│  - Expandable Sample Gemini Prompt & Doc Template           │
 ├─────────────────────────────────────────────────────────────┤
-│  SECTION 5: SURVEYS, MEET & CERTIFICATES (#FFFFFF)          │
-│  - 3 High-contrast Action Buttons (Pre, Post, Meet)         │
-│  - Interactive Certificate of Participation Generator       │
+│  SECTION 5: REWARDS & JOIN (#FFFFFF)                        │
+│  - Pixel Phone national prize & official certificate info   │
+│  - 3 Action Buttons: Pre-Survey, Post-Survey, Join Meet     │
+│  - Interactive Certificate Generator (Dynamic current date) │
 ├─────────────────────────────────────────────────────────────┤
-│  SECTION 6: MINIMAL FOOTER (#F7F4FA)                        │
-│  - Organizer credit, campus lead attribution, Admin trigger │
+│  FOOTER: OFFICIAL ORGANIZER CREDENTIALS (#F7F4FA)           │
+│  - Organizer: Riya P Ladwa | GSA 2026 Semester 2            │
+│  - GID: 16535 | Email: riyaladwa9@gmail.com                 │
+│  - Discreet Organizer Portal login trigger                  │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -375,10 +378,13 @@ npm start
 
 ---
 
-## 👥 Credits & Acknowledgments
+## 👥 Credits & Official Organizer Credentials
 
+- **Lead Organizer**: **Riya P Ladwa**
+- **Designation**: Google Student Ambassador | 2026 Semester 2
+- **Ambassador GID**: 16535
+- **Official Contact**: [riyaladwa9@gmail.com](mailto:riyaladwa9@gmail.com)
 - **Initiative**: [Google Student Ambassador Program](https://www.google.com/)
-- **Campus Lead & Lead Organizer**: **Riya P Ladwa** (Google Student Ambassador)
 - **AI Technologies**: [Google Gemini](https://gemini.google.com/) & [Nano Banana](https://gemini.google.com/)
 - **Event Branding**: Google Play Arena – Game On Night (AI-Powered Game Ideathon)
 

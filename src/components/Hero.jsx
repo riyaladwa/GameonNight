@@ -30,7 +30,7 @@ export default function Hero() {
     if (isMeetConfigured) {
       window.open(config.GOOGLE_MEET_URL, '_blank', 'noopener,noreferrer');
     } else {
-      scrollToSection('surveys-access');
+      scrollToSection('rewards-join');
     }
   };
 
@@ -231,7 +231,7 @@ export default function Hero() {
             <motion.button
               whileHover={prefersReducedMotion ? {} : { scale: 1.02 }}
               whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
-              onClick={() => scrollToSection('about')}
+              onClick={() => scrollToSection('creation-guide')}
               className="w-full sm:w-auto px-6 py-3 rounded-xl font-display font-bold text-xs uppercase tracking-wider btn-primary flex items-center justify-center gap-2 group"
             >
               <span>Explore The Challenge</span>

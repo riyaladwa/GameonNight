@@ -21,9 +21,9 @@ export default function Navbar() {
 
   const navLinks = [
     { name: 'About', id: 'about' },
-    { name: 'Challenge', id: 'challenge' },
-    { name: 'Submission', id: 'submission' },
-    { name: 'Surveys & Access', id: 'surveys-access' },
+    { name: 'How to Participate', id: 'how-to-participate' },
+    { name: 'Creation Guide', id: 'creation-guide' },
+    { name: 'Rewards & Join', id: 'rewards-join' },
   ];
 
   const handleNavClick = (id) => {
@@ -116,7 +116,7 @@ export default function Navbar() {
               <motion.button
                 whileHover={prefersReducedMotion ? {} : { scale: 1.02 }}
                 whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
-                onClick={() => handleNavClick('surveys-access')}
+                onClick={() => handleNavClick('rewards-join')}
                 className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold font-display uppercase tracking-wider btn-secondary"
               >
                 <span>Event Links</span>
@@ -158,7 +158,7 @@ export default function Navbar() {
             ))}
             <div className="pt-2 border-t border-brand-border flex flex-col gap-2">
               <button
-                onClick={() => handleNavClick('surveys-access')}
+                onClick={() => handleNavClick('rewards-join')}
                 className="w-full py-2.5 rounded-lg text-xs font-bold font-display uppercase tracking-wider btn-primary flex items-center justify-center gap-2"
               >
                 <span>View Surveys & Join Meet</span>

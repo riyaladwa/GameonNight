@@ -1,11 +1,22 @@
 import React, { useState } from 'react';
 import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
-import { ExternalLink, Video, ClipboardList, CheckCircle2, Clock, Lock, Award, Info, Sparkles } from 'lucide-react';
+import { 
+  ExternalLink, 
+  Video, 
+  ClipboardList, 
+  CheckCircle2, 
+  Clock, 
+  Lock, 
+  Smartphone, 
+  Award, 
+  Info,
+  Sparkles
+} from 'lucide-react';
 import { useEvent } from '../context/EventContext';
 import { isUrlConfigured } from '../config/eventConfig';
 import CertificateGenerator from './CertificateGenerator';
 
-export default function SurveysAndAccessSection() {
+export default function RewardsAndJoinSection() {
   const { config } = useEvent();
   const prefersReducedMotion = useReducedMotion();
   const [showLockedMessage, setShowLockedMessage] = useState(false);
@@ -14,12 +25,10 @@ export default function SurveysAndAccessSection() {
   const isPreConfigured = isUrlConfigured(config.PRE_SURVEY_URL);
   const isPostConfigured = isUrlConfigured(config.POST_SURVEY_URL);
   const isMeetConfigured = isUrlConfigured(config.GOOGLE_MEET_URL);
-  
-  // Post-Survey is only enabled if explicitly unlocked by the organizer after Google Meet session
   const isPostUnlocked = Boolean(config.POST_SURVEY_UNLOCKED);
 
   return (
-    <section id="surveys-access" className="py-16 sm:py-20 relative bg-brand-bg">
+    <section id="rewards-join" className="py-16 sm:py-20 relative bg-brand-bg">
       
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
         
@@ -29,107 +38,85 @@ export default function SurveysAndAccessSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.5 }}
-          className="text-center max-w-2xl mx-auto mb-10"
+          className="text-center max-w-2xl mx-auto mb-12"
         >
           <span className="text-[11px] font-mono uppercase tracking-widest text-brand-lavender font-semibold block mb-1">
-            SECTION 5
+            SECTION 04 • REWARDS & ACCESS
           </span>
           <h2 className="font-display font-black text-2xl sm:text-4xl text-brand-text uppercase tracking-tight">
-            SURVEYS & EVENT ACCESS
+            REWARDS & EVENT ACCESS
           </h2>
-          <p className="mt-2 text-xs sm:text-sm text-brand-muted">
-            Access the official Google Forms, live Google Meet room, and generate your certificate.
+          <p className="mt-3 text-sm sm:text-base text-brand-muted leading-relaxed font-sans">
+            Review prize opportunities, complete the mandatory surveys, and join the live Google Meet room.
           </p>
         </motion.div>
 
-        {/* Clear Explanation Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10 max-w-4xl mx-auto">
+        {/* 2 Prize & Recognition Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
           
-          {/* Card 1: Pre-Survey (ENABLED NOW) */}
-          <motion.div 
-            initial={{ opacity: 0, x: prefersReducedMotion ? 0 : -15 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4 }}
-            className="p-5 rounded-2xl bg-brand-lavender-light/50 border border-brand-lavender/30 relative overflow-hidden"
-          >
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-[10px] font-mono uppercase font-bold text-brand-lavender tracking-wider">
-                BEFORE THE SESSION
-              </span>
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-brand-lavender text-white">
-                <CheckCircle2 className="w-3 h-3" />
-                <span>OPEN NOW</span>
-              </span>
+          {/* Card 1: Pixel Phone */}
+          <div className="p-6 rounded-2xl bg-gradient-to-b from-brand-peach-light to-white border border-brand-peach/80 shadow-soft-xs flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <div className="w-10 h-10 rounded-xl bg-brand-peach border border-brand-peach/50 flex items-center justify-center text-[#8C5542]">
+                  <Smartphone className="w-5 h-5 text-[#8C5542]" />
+                </div>
+                <span className="text-[10px] font-mono uppercase font-bold text-[#A6634E] px-2.5 py-0.5 rounded-full bg-white border border-brand-peach">
+                  NATIONAL GRAND PRIZE
+                </span>
+              </div>
+              <h3 className="font-display font-black text-lg text-brand-text mb-1.5">
+                Google Pixel Phone
+              </h3>
+              <p className="text-xs text-brand-muted leading-relaxed">
+                Top national finalists stand a chance for the National Winner to win a Google Pixel Phone, subject to national Google Student Ambassador evaluation.
+              </p>
             </div>
-            <h3 className="font-display font-bold text-base text-brand-text mb-2">
-              Pre-Survey (Mandatory)
-            </h3>
-            <p className="text-xs text-brand-muted leading-relaxed">
-              The <strong className="text-brand-text">Pre-Survey is active right now</strong>. You must complete it before entering the live Google Meet session to confirm your attendance and participation eligibility.
-            </p>
-          </motion.div>
+            <span className="text-[10px] font-mono text-[#A6634E] mt-4 block font-medium">
+              * Evaluated across originality, mission design, and pitch clarity.
+            </span>
+          </div>
 
-          {/* Card 2: Post-Survey (LOCKED UNTIL AFTER MEET) */}
-          <motion.div 
-            initial={{ opacity: 0, x: prefersReducedMotion ? 0 : 15 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4 }}
-            className={`p-5 rounded-2xl border relative overflow-hidden transition-all ${
-              isPostUnlocked 
-                ? 'bg-brand-peach-light/60 border-brand-peach/80' 
-                : 'bg-brand-alt/80 border-brand-border'
-            }`}
-          >
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-[10px] font-mono uppercase font-bold text-[#A6634E] tracking-wider">
-                AFTER THE SESSION
-              </span>
-              <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold ${
-                isPostUnlocked 
-                  ? 'bg-brand-sage text-white' 
-                  : 'bg-brand-border text-brand-muted'
-              }`}>
-                {isPostUnlocked ? (
-                  <>
-                    <CheckCircle2 className="w-3 h-3" />
-                    <span>SESSION COMPLETE • UNLOCKED</span>
-                  </>
-                ) : (
-                  <>
-                    <Lock className="w-3 h-3" />
-                    <span>LOCKED UNTIL MEET CONCLUDES</span>
-                  </>
-                )}
-              </span>
+          {/* Card 2: Certificates */}
+          <div className="p-6 rounded-2xl bg-gradient-to-b from-brand-lavender-light/50 to-white border border-brand-lavender/30 shadow-soft-xs flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <div className="w-10 h-10 rounded-xl bg-brand-lavender-light border border-brand-lavender/40 flex items-center justify-center text-brand-lavender">
+                  <Award className="w-5 h-5 text-brand-lavender" />
+                </div>
+                <span className="text-[10px] font-mono uppercase font-bold text-brand-lavender px-2.5 py-0.5 rounded-full bg-white border border-brand-lavender/30">
+                  OFFICIAL CREDENTIALS
+                </span>
+              </div>
+              <h3 className="font-display font-black text-lg text-brand-text mb-1.5">
+                Winner & Participation Certificates
+              </h3>
+              <p className="text-xs text-brand-muted leading-relaxed">
+                Official digital certificates issued under the Google Student Ambassador Program 2026 for all verified pitches and attendees.
+              </p>
             </div>
-            <h3 className="font-display font-bold text-base text-brand-text mb-2">
-              Post-Survey & Feedback
-            </h3>
-            <p className="text-xs text-brand-muted leading-relaxed">
-              The <strong className="text-brand-text">Post-Survey unlocks after the Google Meet session ends</strong>. 
-              Participants submit their game details and Google Docs link here to unlock their official Certificate.
-            </p>
-          </motion.div>
+            <span className="text-[10px] font-mono text-brand-lavender mt-4 block font-medium">
+              * Issued upon attendance verification and feedback submission.
+            </span>
+          </div>
 
         </div>
 
-        {/* Locked Notification Alert */}
+        {/* Locked Alert Notification */}
         <AnimatePresence>
           {showLockedMessage && !isPostUnlocked && (
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="mb-6 p-4 rounded-xl bg-brand-peach-light border border-brand-peach max-w-4xl mx-auto flex items-start gap-3 shadow-soft-xs"
+              className="mb-6 p-4 rounded-xl bg-brand-peach-light border border-brand-peach flex items-start gap-3 shadow-soft-xs"
             >
               <Info className="w-5 h-5 text-[#A6634E] shrink-0 mt-0.5" />
               <div className="flex-1 text-xs text-brand-text leading-relaxed">
                 <p className="font-bold text-[#8C5542] mb-0.5">Post-Survey is currently locked</p>
                 <p className="text-brand-muted">
-                  The Post-Survey & Feedback form will be unlocked immediately after the live Google Meet session finishes. 
-                  Please complete the <strong className="text-brand-lavender font-semibold">Pre-Survey</strong> first so your attendance is recorded!
+                  The Post-Survey will be unlocked immediately after the live Google Meet session finishes. 
+                  Please ensure you complete the <strong className="text-brand-lavender font-semibold">Pre-Survey</strong> first so your attendance is recorded!
                 </p>
               </div>
               <button 
@@ -142,8 +129,8 @@ export default function SurveysAndAccessSection() {
           )}
         </AnimatePresence>
 
-        {/* THREE CLEAN BUTTONS */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto mb-14">
+        {/* 3 Prominent Action Buttons */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
           
           {/* Button 1: Complete Pre-Survey (ENABLED NOW) */}
           <div className="flex flex-col">
@@ -163,7 +150,7 @@ export default function SurveysAndAccessSection() {
             ) : (
               <div className="w-full py-4 px-4 rounded-xl bg-brand-alt border border-brand-border text-xs font-mono text-brand-muted flex items-center justify-center gap-2 text-center">
                 <Clock className="w-4 h-4 text-brand-lavender" />
-                <span>Pre-Survey link announced soon</span>
+                <span>Pre-Survey announced soon</span>
               </div>
             )}
             <span className="text-[10px] font-mono text-brand-lavender text-center mt-1.5 font-semibold">
@@ -171,7 +158,7 @@ export default function SurveysAndAccessSection() {
             </span>
           </div>
 
-          {/* Button 2: Complete Post-Survey (LOCKED UNTIL MEET CONCLUDES) */}
+          {/* Button 2: Complete Post-Survey (GATED UNTIL MEET ENDS) */}
           <div className="flex flex-col">
             {isPostUnlocked && isPostConfigured ? (
               <motion.a
@@ -192,7 +179,7 @@ export default function SurveysAndAccessSection() {
                 type="button"
                 onClick={() => setShowLockedMessage(true)}
                 className="w-full py-4 px-4 rounded-xl bg-brand-alt border border-brand-border/80 text-xs font-mono text-brand-muted flex items-center justify-center gap-2 text-center cursor-not-allowed hover:border-brand-peach/60 transition-colors"
-                title="Unlocks once Google Meet session is complete"
+                title="Unlocks once Google Meet session concludes"
               >
                 <Lock className="w-4 h-4 text-brand-muted" />
                 <span>Post-Survey (Locked)</span>
@@ -231,7 +218,7 @@ export default function SurveysAndAccessSection() {
 
         </div>
 
-        {/* CERTIFICATE GENERATOR MODULE */}
+        {/* Certificate Generator Module */}
         <CertificateGenerator 
           isPostUnlocked={isPostUnlocked}
           hasCompletedFeedback={hasCompletedFeedback}

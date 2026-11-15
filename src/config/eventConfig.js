@@ -30,10 +30,11 @@ export const EVENT_CONFIG = {
   EVENT_MODE: "Virtual / Online via Google Meet",
   EVENT_DURATION: "2 Hours (60s Pitch per participant)",
 
-  // Host & Organizer Details (Add only your official details)
-  HOST_NAME: "Google Student Ambassador",
-  HOST_ROLE: "Campus Lead & Event Organizer",
-  HOST_CONTACT: "", // e.g., "gsa.lead@yourcollege.edu" or leave empty if contact details are not provided
+  // Host & Organizer Details (Official GSA Credentials)
+  HOST_NAME: "Riya P Ladwa",
+  HOST_ROLE: "Google Student Ambassador | 2026 Semester 2",
+  HOST_GID: "16535",
+  HOST_CONTACT: "riyaladwa9@gmail.com",
 
   // Official External URLs
   // Leave empty ("") if pending official link generation.

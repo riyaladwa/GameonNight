@@ -3,9 +3,9 @@ import { EventProvider } from './context/EventContext';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import AboutSection from './components/AboutSection';
-import ChallengeSection from './components/ChallengeSection';
-import SubmissionSection from './components/SubmissionSection';
-import SurveysAndAccessSection from './components/SurveysAndAccessSection';
+import HowToParticipateSection from './components/HowToParticipateSection';
+import CreationGuideSection from './components/CreationGuideSection';
+import RewardsAndJoinSection from './components/RewardsAndJoinSection';
 import Footer from './components/Footer';
 import AdminModal from './components/AdminModal';
 
@@ -14,31 +14,31 @@ export default function App() {
     <EventProvider>
       <div className="relative min-h-screen bg-brand-bg text-brand-text flex flex-col font-sans selection:bg-brand-peach selection:text-brand-text">
         
-        {/* Sticky Header */}
+        {/* Sticky Header Navigation */}
         <Navbar />
 
-        {/* Main Streamlined Landing Page */}
+        {/* 5 Core Event Sections */}
         <main className="flex-grow">
-          {/* Section 1: Hero */}
+          {/* Section 1: Hero (#FFFFFF) */}
           <Hero />
 
-          {/* Section 2: About the Event (Alternate Background #F7F4FA) */}
+          {/* Section 2: About (#F7F4FA) */}
           <AboutSection />
 
-          {/* Section 3: The Creation Challenge (White Background #FFFFFF) */}
-          <ChallengeSection />
+          {/* Section 3: How to Participate (#FFFFFF) */}
+          <HowToParticipateSection />
 
-          {/* Section 4: Submission (Alternate Background #F7F4FA) */}
-          <SubmissionSection />
+          {/* Section 4: Game Creation Guide (#F7F4FA) */}
+          <CreationGuideSection />
 
-          {/* Section 5: Surveys & Event Access (White Background #FFFFFF) */}
-          <SurveysAndAccessSection />
+          {/* Section 5: Rewards & Join (#FFFFFF) */}
+          <RewardsAndJoinSection />
         </main>
 
-        {/* Section 6: Minimal Footer (Alternate Background #F7F4FA) */}
+        {/* Section 6: Footer with Official Organizer Credentials */}
         <Footer />
 
-        {/* Private Administrator Control Panel */}
+        {/* Private Organizer Admin Control Panel */}
         <AdminModal />
 
       </div>
