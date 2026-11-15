@@ -1,11 +1,11 @@
 # Google Play Arena – Game On Night 🎮✨
-### Full-Stack AI-Powered Game Ideathon Platform (Light Theme Edition)
+### Full-Stack AI-Powered Game Ideathon Platform
 
-A refined, light-themed full-stack event website built with **React**, **Tailwind CSS**, **Framer Motion**, and **MongoDB**. Designed with a sophisticated white-and-pastel palette for maximum readability and a modern technology-event aesthetic.
+A production-ready full-stack event website built with **React**, **Tailwind CSS**, **Framer Motion**, and **MongoDB**. Designed with a refined white-and-pastel design system for maximum readability, fluid animations, and real-time backend management for Google Student Ambassador events.
 
 ---
 
-## 🎨 New Design System
+## 🎨 Design System
 
 * **Main Background:** `#FFFFFF`
 * **Alternate Section Background:** `#F7F4FA`
@@ -18,7 +18,7 @@ A refined, light-themed full-stack event website built with **React**, **Tailwin
 
 ---
 
-## 🧭 The 6 Core Sections
+## 🧭 Core Sections & Functionality
 
 1. **Section 1 – Hero (`#FFFFFF`)**:
    - Event branding, tagline (*"Imagine It. Design It. Pitch It."*), and subhead.
@@ -39,28 +39,49 @@ A refined, light-themed full-stack event website built with **React**, **Tailwin
    - Document sharing permission reminder card.
 
 5. **Section 5 – Surveys & Event Access (`#FFFFFF`)**:
-   - 3 Prominent, high-contrast action buttons:
-     - **COMPLETE PRE-SURVEY** (`#8B78B8` Lavender)
-     - **COMPLETE POST-SURVEY** (`#F5D6C6` Peach)
-     - **JOIN GOOGLE MEET** (`#A8BFA5` Sage)
+   - **Pre-Survey Form (Active Now)**: Open for all participants before the live session to record attendance and eligibility.
+   - **Post-Survey Form (Gated)**: Safely locked until the live Google Meet session finishes. Unlocked by organizer with 1-click in the Admin Panel.
+   - **Google Meet Session**: One-click join room link when announced.
+   - **Certificate of Participation Generator**:
+     - Requires feedback completion.
+     - Stamped with dynamic **Current Day's Date**.
+     - Real-time live canvas preview with personalized participant name.
+     - Instant high-res **PDF** and **PNG** downloads with celebration confetti.
 
 6. **Section 6 – Minimal Footer (`#F7F4FA`)**:
    - Event title, host credit, dates, and discreet Organizer Admin Login trigger.
 
 ---
 
+## 🗄️ Full-Stack Backend & MongoDB
+
+- **Database**: MongoDB Atlas (`event_config` collection) manages live dates, official survey URLs, Meet link, and survey lock/unlock status.
+- **Graceful Fallback**: Automatically serves local configuration with zero downtime if the database is offline or unconfigured.
+- **Organizer Admin Panel**:
+  - Accessible via the **GSA** badge in the navbar, footer link, or `?admin=true` (shortcut: `Ctrl+Shift+A`).
+  - Allows the organizer to update event info and toggle the Post-Survey & Certificate status as soon as the Google Meet session ends.
+
+---
+
 ## 🚀 Running Locally
 
 ```bash
-# 1. Start MongoDB Backend API (Port 5001)
+# 1. Install dependencies
+npm install
+
+# 2. Configure environment
+cp .env.example .env
+# Add your MONGODB_URI in .env
+
+# 3. Start MongoDB Backend API (Port 5001)
 npm run server
 
-# 2. Start Frontend Preview / Dev (Port 3000)
+# 4. Start Frontend (Port 3000)
 npm run dev
-# or
-npm run preview
+# or for production preview
+npm run build && npm run preview
 ```
 
 * **Frontend:** [http://localhost:3000](http://localhost:3000)
-* **Backend API:** [http://localhost:5001/api/health](http://localhost:5001/api/health)
-* **Organizer Admin Login:** Click the **GSA** badge in the navbar or visit `?admin=true`.
+* **Backend API:** [http://localhost:5001/api/event-config](http://localhost:5001/api/event-config)
+* **Admin Login:** Click the GSA badge in navbar or press `Ctrl + Shift + A` (Default: `admin` / `gsa_admin_2026`).
