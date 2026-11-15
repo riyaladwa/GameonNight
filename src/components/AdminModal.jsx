@@ -48,6 +48,8 @@ export default function AdminModal() {
     GOOGLE_MEET_URL: '',
     PRE_SURVEY_URL: '',
     POST_SURVEY_URL: '',
+    POST_SURVEY_UNLOCKED: false,
+    CERTIFICATE_DATE: '',
     EVENT_GUIDELINES_URL: '',
     EVENT_NAME: '',
     EVENT_TITLE: '',
@@ -69,6 +71,8 @@ export default function AdminModal() {
         GOOGLE_MEET_URL: config.GOOGLE_MEET_URL || '',
         PRE_SURVEY_URL: config.PRE_SURVEY_URL || '',
         POST_SURVEY_URL: config.POST_SURVEY_URL || '',
+        POST_SURVEY_UNLOCKED: Boolean(config.POST_SURVEY_UNLOCKED),
+        CERTIFICATE_DATE: config.CERTIFICATE_DATE || '',
         EVENT_GUIDELINES_URL: config.EVENT_GUIDELINES_URL || '',
         EVENT_NAME: config.EVENT_NAME || 'GOOGLE PLAY ARENA',
         EVENT_TITLE: config.EVENT_TITLE || 'GAME ON NIGHT',
@@ -392,9 +396,70 @@ export default function AdminModal() {
                   </div>
                 )}
 
-                {/* TAB 2: OFFICIAL URLS */}
+                {/* TAB 2: OFFICIAL URLS & SURVEY STATUS */}
                 {activeTab === 'links' && (
                   <div className="space-y-4">
+                    {/* POST-SURVEY & CERTIFICATE UNLOCK CONTROL */}
+                    <div className="p-4 rounded-xl border border-brand-border bg-brand-alt/80">
+                      <div className="flex items-center justify-between mb-2">
+                        <label className="text-xs font-mono font-bold text-brand-text flex items-center gap-1.5">
+                          <Lock className="w-3.5 h-3.5 text-brand-lavender" />
+                          <span>Post-Survey & Certificate Access Status</span>
+                        </label>
+                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono font-bold ${
+                          formData.POST_SURVEY_UNLOCKED
+                            ? 'bg-brand-sage text-white'
+                            : 'bg-brand-peach-light text-[#A6634E] border border-brand-peach'
+                        }`}>
+                          {formData.POST_SURVEY_UNLOCKED ? 'UNLOCKED (Session Ended)' : 'LOCKED (Pre-Session)'}
+                        </span>
+                      </div>
+                      
+                      <p className="text-xs text-brand-muted mb-3">
+                        {formData.POST_SURVEY_UNLOCKED
+                          ? 'Post-Survey and Certificate Generator are currently OPEN for participants to submit feedback and generate their certificate.'
+                          : 'Only Pre-Survey is currently enabled for visitors. Once the live Google Meet session finishes, click "Unlock Post-Survey" below.'}
+                      </p>
+
+                      <button
+                        type="button"
+                        onClick={() => setFormData({ ...formData, POST_SURVEY_UNLOCKED: !formData.POST_SURVEY_UNLOCKED })}
+                        className={`w-full py-2 px-3 rounded-lg text-xs font-mono font-bold flex items-center justify-center gap-2 transition-all ${
+                          formData.POST_SURVEY_UNLOCKED
+                            ? 'bg-white border border-brand-border text-brand-text hover:bg-brand-peach-light hover:text-[#A6634E]'
+                            : 'btn-peach text-[#8C5542] font-black shadow-soft-xs'
+                        }`}
+                      >
+                        {formData.POST_SURVEY_UNLOCKED ? (
+                          <>
+                            <Lock className="w-3.5 h-3.5" />
+                            <span>Click to Lock Post-Survey Again</span>
+                          </>
+                        ) : (
+                          <>
+                            <CheckCircle2 className="w-3.5 h-3.5 text-[#8C5542]" />
+                            <span>Unlock Post-Survey & Certificate Now</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-mono text-brand-text font-medium mb-1">
+                        Certificate Issue Date (Optional)
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.CERTIFICATE_DATE}
+                        onChange={(e) => setFormData({ ...formData, CERTIFICATE_DATE: e.target.value })}
+                        className="w-full px-3 py-2 rounded-xl bg-brand-alt border border-brand-border text-brand-text text-xs font-mono focus:border-brand-lavender focus:bg-white focus:outline-none transition-colors"
+                        placeholder="Leave empty for dynamic current day's date (e.g. November 15, 2026)"
+                      />
+                      <span className="text-[10px] text-brand-muted mt-0.5 block">
+                        If left blank, certificates are automatically stamped with the participant's current day date.
+                      </span>
+                    </div>
+
                     <div>
                       <label className="block text-xs font-mono text-brand-text font-medium mb-1">
                         Official Google Meet URL (Leave empty if unannounced)

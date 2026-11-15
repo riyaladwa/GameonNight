@@ -38,12 +38,15 @@ export const EVENT_CONFIG = {
   // Official External URLs
   // Leave empty ("") if pending official link generation.
   // The UI will gracefully disable the button and show "Link will be announced soon".
-  PRE_SURVEY_URL: "https://producttrialsurvey.geministudentambassador.com/",       // Official Pre-Event Survey
+  PRE_SURVEY_URL: "https://producttrialsurvey.geministudentambassador.com/",       // Official Pre-Event Survey (ENABLED)
   POST_SURVEY_URL: "https://producttrialfeedback.geministudentambassador.com/",     // Official Post-Event Feedback & Submission
+  POST_SURVEY_UNLOCKED: false, // For now, ONLY Pre-Survey is enabled. Post-Survey unlocks after the Google Meet session.
   GOOGLE_MEET_URL: "",      // Official Google Meet link for the live Game On Night session
   EVENT_GUIDELINES_URL: "", // Optional official Google Docs/Drive link for detailed guidelines
 
-  // Certificate & Reward Official Statements
+  // Certificate & Reward Official Settings
+  CERTIFICATE_GENERATION_ENABLED: true,
+  CERTIFICATE_DATE: "", // If empty, dynamically generates with the current day's date
   CERTIFICATE_INFORMATION: {
     participationCriteria: "Awarded to all verified attendees who complete the official Pre-Survey, attend the live Google Meet session, pitch their concept, and submit their complete Google Doc via the official Post-Survey form.",
     winnerCriteria: "Awarded to the top-evaluated game concepts judged on originality, specific mission design, non-violent mechanics, creative visual poster, and 60-second pitch delivery.",
