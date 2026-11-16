@@ -241,15 +241,16 @@ export default function RewardsAndJoinSection() {
               <span className="text-[10px] font-mono text-brand-lavender font-semibold">
                 ● Step 1 • Open Now
               </span>
-              <button
-                type="button"
-                onClick={() => setHasFilledPreSurvey(!hasFilledPreSurvey)}
-                className={`text-[10px] font-mono transition-colors ${
-                  hasFilledPreSurvey ? 'text-[#4E6B4A] font-bold' : 'text-brand-muted hover:text-brand-text'
-                }`}
-              >
-                {hasFilledPreSurvey ? '✓ Filled' : 'Mark as filled'}
-              </button>
+              {hasFilledPreSurvey ? (
+                <span className="text-[10px] font-mono text-[#4E6B4A] font-semibold flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3 text-brand-sage" />
+                  <span>Completed</span>
+                </span>
+              ) : (
+                <span className="text-[10px] font-mono text-brand-muted">
+                  Required for Step 2
+                </span>
+              )}
             </div>
           </div>
 
@@ -285,17 +286,16 @@ export default function RewardsAndJoinSection() {
               <span className="text-[10px] font-mono text-brand-muted">
                 {hasFilledPreSurvey ? '● Step 2 • Unlocked' : '🔒 Unlocks after Pre-Survey'}
               </span>
-              {hasFilledPreSurvey && (
-                <button
-                  type="button"
-                  onClick={() => setHasFilledFeedback(!hasFilledFeedback)}
-                  className={`text-[10px] font-mono transition-colors ${
-                    hasFilledFeedback ? 'text-[#4E6B4A] font-bold' : 'text-brand-muted hover:text-brand-text'
-                  }`}
-                >
-                  {hasFilledFeedback ? '✓ Submitted' : 'Mark as submitted'}
-                </button>
-              )}
+              {hasFilledFeedback ? (
+                <span className="text-[10px] font-mono text-[#4E6B4A] font-semibold flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3 text-brand-sage" />
+                  <span>Submitted</span>
+                </span>
+              ) : hasFilledPreSurvey ? (
+                <span className="text-[10px] font-mono text-[#8C5542] font-semibold">
+                  Pending submission
+                </span>
+              ) : null}
             </div>
           </div>
 
