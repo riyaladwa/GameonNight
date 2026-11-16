@@ -6,7 +6,7 @@ import { isUrlConfigured } from '../config/eventConfig';
 import { scrollToSection } from '../utils/helpers';
 
 export default function Navbar() {
-  const { config, setIsAdminModalOpen, adminUser } = useEvent();
+  const { config } = useEvent();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const prefersReducedMotion = useReducedMotion();
@@ -73,16 +73,13 @@ export default function Navbar() {
               </div>
             </button>
 
-            {/* GSA Badge - Click to open Admin Panel */}
-            <button
-              onClick={() => setIsAdminModalOpen(true)}
-              title="GSA Organizer Admin Portal"
-              className="ml-1 px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold uppercase bg-brand-lavender-light hover:bg-brand-lavender/20 text-brand-lavender border border-brand-lavender/30 transition-all flex items-center gap-1"
+            {/* GSA Ambassador Badge */}
+            <span
+              className="ml-1 px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold uppercase bg-brand-lavender-light text-brand-lavender border border-brand-lavender/30 flex items-center gap-1"
             >
               <Shield className="w-2.5 h-2.5 text-brand-lavender" />
               <span>GSA</span>
-              {adminUser && <span className="w-1.5 h-1.5 rounded-full bg-brand-sage" />}
-            </button>
+            </span>
           </div>
 
           {/* Desktop Navigation */}

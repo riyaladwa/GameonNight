@@ -1,9 +1,9 @@
 import React from 'react';
-import { Mail, Calendar, Lock, Shield, User, Award, ExternalLink } from 'lucide-react';
+import { Mail, Calendar, Shield, User, Award, ExternalLink } from 'lucide-react';
 import { useEvent } from '../context/EventContext';
 
 export default function Footer() {
-  const { config, setIsAdminModalOpen, adminUser } = useEvent();
+  const { config } = useEvent();
 
   const organizerEmail = config.HOST_CONTACT && config.HOST_CONTACT.trim().length > 0 
     ? config.HOST_CONTACT 
@@ -54,7 +54,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* BOTTOM METADATA & ADMIN ACCESS */}
+        {/* BOTTOM METADATA */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left text-xs font-mono text-brand-muted pt-4 border-t border-brand-border/60">
           
           <div>
@@ -67,18 +67,8 @@ export default function Footer() {
             <span>AI-Powered Game Ideathon</span>
           </div>
 
-          <div className="flex items-center gap-4">
-            {/* Discreet Admin Login Trigger */}
-            <button
-              onClick={() => setIsAdminModalOpen(true)}
-              className="text-brand-muted hover:text-brand-lavender flex items-center gap-1 transition-colors"
-              title="Organizer Admin Portal (Ctrl + Shift + A)"
-            >
-              <Lock className="w-3 h-3 text-brand-lavender" />
-              <span>{adminUser ? `Admin: ${adminUser.username}` : 'Organizer Portal'}</span>
-            </button>
-
-            <span>© {new Date().getFullYear()} GSA Program</span>
+          <div>
+            <span>© {new Date().getFullYear()} GSA Program • Google Student Ambassador</span>
           </div>
 
         </div>

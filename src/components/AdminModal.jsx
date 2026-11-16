@@ -264,10 +264,6 @@ export default function AdminModal() {
                     {isLoggingIn ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Lock className="w-3.5 h-3.5" />}
                     <span>{isLoggingIn ? 'Authenticating...' : 'Sign In as Admin'}</span>
                   </button>
-
-                  <p className="text-[10px] text-center font-mono text-brand-muted pt-2">
-                    Default dev password: <code className="text-brand-lavender font-semibold">gsa_admin_2026</code>
-                  </p>
                 </form>
               </div>
             ) : (
