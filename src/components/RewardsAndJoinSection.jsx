@@ -10,7 +10,8 @@ import {
   Smartphone, 
   Award, 
   Info,
-  Sparkles
+  Sparkles,
+  AlertTriangle
 } from 'lucide-react';
 import { useEvent } from '../context/EventContext';
 import { isUrlConfigured } from '../config/eventConfig';
@@ -19,13 +20,58 @@ import CertificateGenerator from './CertificateGenerator';
 export default function RewardsAndJoinSection() {
   const { config } = useEvent();
   const prefersReducedMotion = useReducedMotion();
-  const [showLockedMessage, setShowLockedMessage] = useState(false);
-  const [hasCompletedFeedback, setHasCompletedFeedback] = useState(false);
+  const [feedbackLockAlert, setFeedbackLockAlert] = useState(false);
+
+  // Form progression state persisted in localStorage
+  const [hasFilledPreSurvey, setHasFilledPreSurveyState] = useState(() => {
+    try {
+      return localStorage.getItem('gsa_presurvey_done') === 'true';
+    } catch (e) {
+      return false;
+    }
+  });
+
+  const [hasFilledFeedback, setHasFilledFeedbackState] = useState(() => {
+    try {
+      return localStorage.getItem('gsa_feedback_done') === 'true';
+    } catch (e) {
+      return false;
+    }
+  });
+
+  const setHasFilledPreSurvey = (val) => {
+    setHasFilledPreSurveyState(val);
+    try {
+      localStorage.setItem('gsa_presurvey_done', String(val));
+    } catch (e) {}
+  };
+
+  const setHasFilledFeedback = (val) => {
+    setHasFilledFeedbackState(val);
+    try {
+      localStorage.setItem('gsa_feedback_done', String(val));
+    } catch (e) {}
+  };
 
   const isPreConfigured = isUrlConfigured(config.PRE_SURVEY_URL);
   const isPostConfigured = isUrlConfigured(config.POST_SURVEY_URL);
   const isMeetConfigured = isUrlConfigured(config.GOOGLE_MEET_URL);
-  const isPostUnlocked = Boolean(config.POST_SURVEY_UNLOCKED);
+
+  const handlePreSurveyClick = () => {
+    // Open Pre-Survey form and mark step 1 completed
+    setHasFilledPreSurvey(true);
+    setFeedbackLockAlert(false);
+  };
+
+  const handleFeedbackClick = (e) => {
+    if (!hasFilledPreSurvey) {
+      e.preventDefault();
+      setFeedbackLockAlert(true);
+      return;
+    }
+    // Mark step 2 completed
+    setHasFilledFeedback(true);
+  };
 
   return (
     <section id="rewards-join" className="py-16 sm:py-20 relative bg-brand-bg">
@@ -47,7 +93,7 @@ export default function RewardsAndJoinSection() {
             REWARDS & EVENT ACCESS
           </h2>
           <p className="mt-3 text-sm sm:text-base text-brand-muted leading-relaxed font-sans">
-            Review prize opportunities, complete the mandatory surveys, and join the live Google Meet room.
+            Review prize opportunities, complete the mandatory event forms in sequence, and join the live Google Meet room.
           </p>
         </motion.div>
 
@@ -89,39 +135,75 @@ export default function RewardsAndJoinSection() {
                 </span>
               </div>
               <h3 className="font-display font-black text-lg text-brand-text mb-1.5">
-                Winner & Participation Certificates
+                Official Participation Certificate
               </h3>
               <p className="text-xs text-brand-muted leading-relaxed">
-                Official digital certificates issued under the Google Student Ambassador Program 2026 for all verified pitches and attendees.
+                Official digital credentials issued under the Google Student Ambassador Program 2026. Unlocked once you fill both the Pre-Survey and Feedback forms.
               </p>
             </div>
             <span className="text-[10px] font-mono text-brand-lavender mt-4 block font-medium">
-              * Issued upon attendance verification and feedback submission.
+              * Stamped with your name and today's date upon completion.
             </span>
           </div>
 
         </div>
 
-        {/* Locked Alert Notification */}
+        {/* Sequential Step Guide Banner */}
+        <div className="mb-6 p-4 rounded-2xl bg-white border border-brand-border shadow-soft-xs">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+            <span className="font-mono font-bold text-brand-text uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-brand-lavender" />
+              <span>Step-by-Step Participation Flow:</span>
+            </span>
+            <div className="flex flex-wrap items-center gap-2 font-mono text-[11px]">
+              <span className={`px-2.5 py-1 rounded-lg border ${
+                hasFilledPreSurvey 
+                  ? 'bg-brand-sage-light text-[#4E6B4A] border-brand-sage' 
+                  : 'bg-brand-lavender-light text-brand-lavender border-brand-lavender/40 font-bold'
+              }`}>
+                1. Pre-Survey {hasFilledPreSurvey ? '✓' : '(Open)'}
+              </span>
+              <span className="text-brand-border">→</span>
+              <span className={`px-2.5 py-1 rounded-lg border ${
+                hasFilledFeedback 
+                  ? 'bg-brand-sage-light text-[#4E6B4A] border-brand-sage font-bold' 
+                  : hasFilledPreSurvey 
+                    ? 'bg-brand-peach-light text-[#8C5542] border-brand-peach font-bold' 
+                    : 'bg-brand-alt text-brand-muted border-brand-border'
+              }`}>
+                2. Feedback Form {hasFilledFeedback ? '✓' : hasFilledPreSurvey ? '(Unlocked)' : '(Locked)'}
+              </span>
+              <span className="text-brand-border">→</span>
+              <span className={`px-2.5 py-1 rounded-lg border ${
+                hasFilledPreSurvey && hasFilledFeedback 
+                  ? 'bg-brand-sage-light text-[#4E6B4A] border-brand-sage font-bold' 
+                  : 'bg-brand-alt text-brand-muted border-brand-border'
+              }`}>
+                3. Certificate {hasFilledPreSurvey && hasFilledFeedback ? '✓ Unlocked' : '🔒 Locked'}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Locked Feedback Alert Banner */}
         <AnimatePresence>
-          {showLockedMessage && !isPostUnlocked && (
+          {feedbackLockAlert && !hasFilledPreSurvey && (
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               className="mb-6 p-4 rounded-xl bg-brand-peach-light border border-brand-peach flex items-start gap-3 shadow-soft-xs"
             >
-              <Info className="w-5 h-5 text-[#A6634E] shrink-0 mt-0.5" />
+              <AlertTriangle className="w-5 h-5 text-[#A6634E] shrink-0 mt-0.5" />
               <div className="flex-1 text-xs text-brand-text leading-relaxed">
-                <p className="font-bold text-[#8C5542] mb-0.5">Post-Survey is currently locked</p>
+                <p className="font-bold text-[#8C5542] mb-0.5">Pre-Survey Required First</p>
                 <p className="text-brand-muted">
-                  The Post-Survey will be unlocked immediately after the live Google Meet session finishes. 
-                  Please ensure you complete the <strong className="text-brand-lavender font-semibold">Pre-Survey</strong> first so your attendance is recorded!
+                  The Feedback Form is only accessible after participants complete the <strong className="text-brand-lavender font-semibold">Pre-Survey Form</strong>. Please complete Step 1 first to record your attendance.
                 </p>
               </div>
               <button 
-                onClick={() => setShowLockedMessage(false)}
-                className="text-xs text-brand-muted hover:text-brand-text font-mono font-bold"
+                onClick={() => setFeedbackLockAlert(false)}
+                className="text-xs text-brand-muted hover:text-brand-text font-mono font-bold px-2 py-1"
               >
                 ✕
               </button>
@@ -141,6 +223,7 @@ export default function RewardsAndJoinSection() {
                 href={config.PRE_SURVEY_URL}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={handlePreSurveyClick}
                 className="w-full py-4 px-4 rounded-xl text-xs font-bold font-display uppercase tracking-wider btn-primary flex items-center justify-center gap-2 text-center shadow-soft-xs"
               >
                 <ClipboardList className="w-4 h-4" />
@@ -153,41 +236,67 @@ export default function RewardsAndJoinSection() {
                 <span>Pre-Survey announced soon</span>
               </div>
             )}
-            <span className="text-[10px] font-mono text-brand-lavender text-center mt-1.5 font-semibold">
-              ● Open Now • Fill before Google Meet
-            </span>
+            
+            <div className="flex items-center justify-between mt-1.5 px-1">
+              <span className="text-[10px] font-mono text-brand-lavender font-semibold">
+                ● Step 1 • Open Now
+              </span>
+              <button
+                type="button"
+                onClick={() => setHasFilledPreSurvey(!hasFilledPreSurvey)}
+                className={`text-[10px] font-mono transition-colors ${
+                  hasFilledPreSurvey ? 'text-[#4E6B4A] font-bold' : 'text-brand-muted hover:text-brand-text'
+                }`}
+              >
+                {hasFilledPreSurvey ? '✓ Filled' : 'Mark as filled'}
+              </button>
+            </div>
           </div>
 
-          {/* Button 2: Complete Post-Survey (GATED UNTIL MEET ENDS) */}
+          {/* Button 2: Complete Feedback Form (GATED: ONLY AVAILABLE WHEN PRE-SURVEY IS FILLED) */}
           <div className="flex flex-col">
-            {isPostUnlocked && isPostConfigured ? (
+            {hasFilledPreSurvey && isPostConfigured ? (
               <motion.a
                 whileHover={prefersReducedMotion ? {} : { scale: 1.02 }}
                 whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
                 href={config.POST_SURVEY_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => setHasCompletedFeedback(true)}
+                onClick={handleFeedbackClick}
                 className="w-full py-4 px-4 rounded-xl text-xs font-bold font-display uppercase tracking-wider btn-peach flex items-center justify-center gap-2 text-center font-extrabold shadow-soft-xs"
               >
                 <CheckCircle2 className="w-4 h-4 text-[#8C5542]" />
-                <span>Complete Post-Survey</span>
+                <span>Complete Feedback Form</span>
                 <ExternalLink className="w-3.5 h-3.5 opacity-80" />
               </motion.a>
             ) : (
               <button
                 type="button"
-                onClick={() => setShowLockedMessage(true)}
-                className="w-full py-4 px-4 rounded-xl bg-brand-alt border border-brand-border/80 text-xs font-mono text-brand-muted flex items-center justify-center gap-2 text-center cursor-not-allowed hover:border-brand-peach/60 transition-colors"
-                title="Unlocks once Google Meet session concludes"
+                onClick={handleFeedbackClick}
+                className="w-full py-4 px-4 rounded-xl bg-brand-alt border border-brand-border/80 text-xs font-mono text-brand-muted flex items-center justify-center gap-2 text-center cursor-pointer hover:border-brand-peach/60 transition-colors group"
+                title="Available to click only when participants fill out the Pre-Survey form"
               >
-                <Lock className="w-4 h-4 text-brand-muted" />
-                <span>Post-Survey (Locked)</span>
+                <Lock className="w-4 h-4 text-brand-muted group-hover:text-[#8C5542] transition-colors" />
+                <span>Feedback Form (Fill Pre-Survey First)</span>
               </button>
             )}
-            <span className="text-[10px] font-mono text-brand-muted text-center mt-1.5">
-              {isPostUnlocked ? 'Submit Google Doc & Feedback' : 'Unlocks after Google Meet session'}
-            </span>
+
+            <div className="flex items-center justify-between mt-1.5 px-1">
+              <span className="text-[10px] font-mono text-brand-muted">
+                {hasFilledPreSurvey ? '● Step 2 • Unlocked' : '🔒 Unlocks after Pre-Survey'}
+              </span>
+              {hasFilledPreSurvey && (
+                <button
+                  type="button"
+                  onClick={() => setHasFilledFeedback(!hasFilledFeedback)}
+                  className={`text-[10px] font-mono transition-colors ${
+                    hasFilledFeedback ? 'text-[#4E6B4A] font-bold' : 'text-brand-muted hover:text-brand-text'
+                  }`}
+                >
+                  {hasFilledFeedback ? '✓ Submitted' : 'Mark as submitted'}
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Button 3: Join Google Meet */}
@@ -211,18 +320,24 @@ export default function RewardsAndJoinSection() {
                 <span>Meet link announced soon</span>
               </div>
             )}
-            <span className="text-[10px] font-mono text-brand-muted text-center mt-1.5">
-              Live Game On Night Room
-            </span>
+            <div className="flex items-center justify-between mt-1.5 px-1">
+              <span className="text-[10px] font-mono text-brand-muted">
+                Live Game On Night Room
+              </span>
+              <span className="text-[10px] font-mono text-brand-sage font-semibold">
+                meet.google.com
+              </span>
+            </div>
           </div>
 
         </div>
 
-        {/* Certificate Generator Module */}
+        {/* Certificate Generator Module (GATED: ONLY AVAILABLE AFTER BOTH FORMS ARE FILLED) */}
         <CertificateGenerator 
-          isPostUnlocked={isPostUnlocked}
-          hasCompletedFeedback={hasCompletedFeedback}
-          setHasCompletedFeedback={setHasCompletedFeedback}
+          hasFilledPreSurvey={hasFilledPreSurvey}
+          setHasFilledPreSurvey={setHasFilledPreSurvey}
+          hasFilledFeedback={hasFilledFeedback}
+          setHasFilledFeedback={setHasFilledFeedback}
         />
 
       </div>

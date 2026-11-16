@@ -1,20 +1,41 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Award, Download, CheckCircle2, Lock, Sparkles, RefreshCw, FileText, UserCheck, Calendar } from 'lucide-react';
+import { 
+  Award, 
+  Download, 
+  CheckCircle2, 
+  Lock, 
+  Sparkles, 
+  RefreshCw, 
+  FileText, 
+  UserCheck, 
+  Calendar,
+  ExternalLink,
+  ChevronRight,
+  ShieldCheck,
+  ShieldAlert
+} from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { jsPDF } from 'jspdf';
 import { useEvent } from '../context/EventContext';
 
-export default function CertificateGenerator({ isPostUnlocked, hasCompletedFeedback, setHasCompletedFeedback }) {
+export default function CertificateGenerator({ 
+  hasFilledPreSurvey, 
+  setHasFilledPreSurvey, 
+  hasFilledFeedback, 
+  setHasFilledFeedback 
+}) {
   const { config } = useEvent();
-  const [participantName, setParticipantName] = useState('');
-  const [collegeName, setCollegeName] = useState('');
+  const [participantName, setParticipantName] = useState('Alex Johnson');
   const [certificateId, setCertificateId] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [hasGenerated, setHasGenerated] = useState(false);
   const canvasRef = useRef(null);
 
-  // Get dynamic current day's date or custom config date
+  // Both forms must be completed to unlock certificate generation
+  const isBothFormsFilled = Boolean(hasFilledPreSurvey && hasFilledFeedback);
+
+  // Dynamic current day's date or custom override
   const getTodayFormatted = () => {
     if (config.CERTIFICATE_DATE && config.CERTIFICATE_DATE.trim().length > 0) {
       return config.CERTIFICATE_DATE.trim();
@@ -29,16 +50,18 @@ export default function CertificateGenerator({ isPostUnlocked, hasCompletedFeedb
 
   const currentDate = getTodayFormatted();
 
-  // Generate unique Certificate ID on mount
+  // Unique Certificate ID
   useEffect(() => {
     const randomHex = Math.floor(100000 + Math.random() * 900000);
     setCertificateId(`GSA-GPA-2026-${randomHex}`);
   }, []);
 
-  // Redraw canvas whenever name, college, or date changes
+  // Redraw canvas whenever name, date, or cert ID changes and component is unlocked
   useEffect(() => {
-    renderCertificate();
-  }, [participantName, collegeName, currentDate, certificateId]);
+    if (isBothFormsFilled) {
+      renderCertificate();
+    }
+  }, [participantName, currentDate, certificateId, isBothFormsFilled]);
 
   const renderCertificate = () => {
     const canvas = canvasRef.current;
@@ -46,219 +69,68 @@ export default function CertificateGenerator({ isPostUnlocked, hasCompletedFeedb
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // High resolution canvas for sharp printing & PDF export
-    const width = 1920;
-    const height = 1080;
+    // Native resolution matching the official PDF template geometry: 2400 x 1730
+    const width = 2400;
+    const height = 1730;
     canvas.width = width;
     canvas.height = height;
 
-    // Check if background template exists, otherwise render crisp vector certificate
     const templateImg = new Image();
     templateImg.crossOrigin = 'anonymous';
     templateImg.src = '/certificate-template.png';
 
-    const drawCustomVectorCertificate = () => {
-      // 1. Background Fill
-      ctx.fillStyle = '#FFFFFF';
-      ctx.fillRect(0, 0, width, height);
-
-      // Subtle ambient background pattern
-      ctx.fillStyle = '#FAF8FC';
-      ctx.fillRect(40, 40, width - 80, height - 80);
-
-      // 2. Double Border with Google / Lavender Accent
-      ctx.strokeStyle = '#8B78B8';
-      ctx.lineWidth = 14;
-      ctx.strokeRect(50, 50, width - 100, height - 100);
-
-      ctx.strokeStyle = '#A8BFA5';
-      ctx.lineWidth = 3;
-      ctx.strokeRect(70, 70, width - 140, height - 140);
-
-      // Corner Accents
-      const drawCorner = (x, y) => {
-        ctx.fillStyle = '#8B78B8';
-        ctx.beginPath();
-        ctx.arc(x, y, 12, 0, Math.PI * 2);
-        ctx.fill();
-      };
-      drawCorner(70, 70);
-      drawCorner(width - 70, 70);
-      drawCorner(70, height - 70);
-      drawCorner(width - 70, height - 70);
-
-      // 3. Header: Google Student Ambassador Branding
+    const drawTextOverlays = () => {
+      // 1. Overlay Dynamic Participant Name directly above the designated underline
+      // Baseline sits right above underline at y = 918 (y = 904), centered at x = 1200
       ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
 
-      // Google 4-Color Accent Bar
-      const barY = 120;
-      const barW = 320;
-      const barH = 6;
-      const colors = ['#4285F4', '#EA4335', '#FBBC05', '#34A853'];
-      colors.forEach((c, i) => {
-        ctx.fillStyle = c;
-        ctx.fillRect((width / 2) - (barW / 2) + (i * (barW / 4)), barY, barW / 4, barH);
-      });
-
-      ctx.font = 'bold 26px "Plus Jakarta Sans", sans-serif';
-      ctx.fillStyle = '#777780';
-      ctx.letterSpacing = '6px';
-      ctx.fillText('GOOGLE STUDENT AMBASSADOR PROGRAM', width / 2, 175);
-
-      // Event Main Title
-      ctx.font = '900 68px "Space Grotesk", sans-serif';
-      ctx.fillStyle = '#34343B';
-      ctx.letterSpacing = '2px';
-      ctx.fillText('CERTIFICATE OF PARTICIPATION', width / 2, 260);
-
-      // Event Category Subtitle
-      ctx.font = '600 24px "Plus Jakarta Sans", sans-serif';
-      ctx.fillStyle = '#8B78B8';
-      ctx.letterSpacing = '4px';
-      ctx.fillText('GOOGLE PLAY ARENA • GAME ON NIGHT', width / 2, 305);
-
-      ctx.font = 'italic 20px "Plus Jakarta Sans", sans-serif';
-      ctx.fillStyle = '#777780';
-      ctx.fillText('AI-Powered Game Ideathon • Imagine It. Design It. Pitch It.', width / 2, 335);
-
-      // 4. "This is proudly presented to"
-      ctx.font = '500 22px "Plus Jakarta Sans", sans-serif';
-      ctx.fillStyle = '#777780';
-      ctx.letterSpacing = '1px';
-      ctx.fillText('This is proudly presented to', width / 2, 410);
-
-      // 5. Participant Name (Dynamic & Prominent)
-      const displayName = participantName.trim() || 'Your Name Here';
-      ctx.font = 'bold 74px "Playfair Display", "Georgia", serif';
-      ctx.fillStyle = '#8B78B8';
-      ctx.letterSpacing = '1px';
-      ctx.fillText(displayName, width / 2, 500);
-
-      // Decorative Underline under name
-      ctx.strokeStyle = '#F5D6C6';
-      ctx.lineWidth = 4;
-      ctx.beginPath();
-      ctx.moveTo(width / 2 - 280, 525);
-      ctx.lineTo(width / 2 + 280, 525);
-      ctx.stroke();
-
-      // College name if provided
-      if (collegeName.trim()) {
-        ctx.font = '600 22px "Plus Jakarta Sans", sans-serif';
-        ctx.fillStyle = '#555560';
-        ctx.fillText(collegeName.trim(), width / 2, 565);
+      if (participantName.trim().length > 0) {
+        ctx.font = 'bold 74px "Georgia", "Playfair Display", "Times New Roman", serif';
+        ctx.fillStyle = '#1A73E8'; // Google Blue
+        ctx.fillText(participantName.trim(), 1200, 904);
+      } else {
+        // Prevents blank template exposure by watermarking placeholder on canvas
+        ctx.font = 'italic 58px "Georgia", "Playfair Display", serif';
+        ctx.fillStyle = '#9AA0A6'; // Muted placeholder grey
+        ctx.fillText('[ Enter Your Name in the Input Field Above ]', 1200, 904);
       }
 
-      // 6. Citation Statement
-      ctx.font = '400 22px "Plus Jakarta Sans", sans-serif';
-      ctx.fillStyle = '#555560';
-      const startTextY = collegeName.trim() ? 615 : 595;
-      ctx.fillText('For active and creative participation in the AI-Powered Game Ideathon,', width / 2, startTextY);
-      ctx.fillText('inventing an original game concept with Google Gemini, crafting its visual poster with Nano Banana,', width / 2, startTextY + 32);
-      ctx.fillText('and pitching it during the live Google Meet Game On Night session.', width / 2, startTextY + 64);
-
-      // 7. Footer: Signatures & Date
-      const footerY = 880;
-
-      // Left Column: Date (DYNAMIC CURRENT DAY'S DATE)
-      ctx.textAlign = 'left';
-      ctx.font = 'bold 24px "Plus Jakarta Sans", sans-serif';
-      ctx.fillStyle = '#34343B';
-      ctx.fillText(currentDate, 220, footerY);
-
-      ctx.strokeStyle = '#EAE7ED';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(220, footerY + 12);
-      ctx.lineTo(500, footerY + 12);
-      ctx.stroke();
-
-      ctx.font = '500 16px "Plus Jakarta Sans", sans-serif';
-      ctx.fillStyle = '#777780';
-      ctx.fillText('DATE OF ISSUE', 220, footerY + 38);
-
-      // Center Column: Official GSA Verification Seal
+      // 2. Overlay Dynamic Current Day Date directly above the Date line
+      // Baseline sits right above underline at y = 1473 (y = 1460), centered at x = 441
       ctx.textAlign = 'center';
-      ctx.fillStyle = '#F7F4FA';
-      ctx.beginPath();
-      ctx.arc(width / 2, footerY - 10, 55, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.strokeStyle = '#8B78B8';
-      ctx.lineWidth = 3;
-      ctx.stroke();
-
-      ctx.font = 'bold 13px "JetBrains Mono", monospace';
-      ctx.fillStyle = '#8B78B8';
-      ctx.fillText('OFFICIAL GSA', width / 2, footerY - 20);
-      ctx.fillText('VERIFIED', width / 2, footerY);
-      ctx.fillText('★ 2026 ★', width / 2, footerY + 20);
-
-      // Right Column: Organizer Signature
-      ctx.textAlign = 'right';
-      ctx.font = 'italic bold 28px "Georgia", serif';
-      ctx.fillStyle = '#34343B';
-      ctx.fillText('Riya P Ladwa', width - 220, footerY);
-
-      ctx.strokeStyle = '#EAE7ED';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(width - 500, footerY + 12);
-      ctx.lineTo(width - 220, footerY + 12);
-      ctx.stroke();
-
-      ctx.font = '600 16px "Plus Jakarta Sans", sans-serif';
-      ctx.fillStyle = '#8B78B8';
-      ctx.fillText('Google Student Ambassador', width - 220, footerY + 38);
-      ctx.font = '400 14px "Plus Jakarta Sans", sans-serif';
-      ctx.fillStyle = '#777780';
-      ctx.fillText('Campus Lead & Event Organizer', width - 220, footerY + 58);
-
-      // Bottom Bar: Verification ID
-      ctx.textAlign = 'center';
-      ctx.font = '12px "JetBrains Mono", monospace';
-      ctx.fillStyle = '#A0A0A8';
-      ctx.fillText(`Certificate ID: ${certificateId} • Verified Digital Credential`, width / 2, height - 70);
+      ctx.textBaseline = 'bottom';
+      ctx.font = '600 36px "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+      ctx.fillStyle = '#202124'; // Neutral dark
+      ctx.fillText(currentDate, 441, 1460);
     };
 
     templateImg.onload = () => {
-      // Draw background image
       ctx.drawImage(templateImg, 0, 0, width, height);
-
-      // Overlay Dynamic Participant Name
-      const displayName = participantName.trim() || 'Your Name Here';
-      ctx.textAlign = 'center';
-      ctx.font = 'bold 64px "Playfair Display", "Georgia", serif';
-      ctx.fillStyle = '#2A2A32';
-      ctx.fillText(displayName, width / 2, height * 0.46);
-
-      // Dynamic Date stamped on template
-      ctx.textAlign = 'left';
-      ctx.font = 'bold 22px "Plus Jakarta Sans", sans-serif';
-      ctx.fillStyle = '#34343B';
-      ctx.fillText(currentDate, width * 0.18, height * 0.84);
-
-      // Verification ID
-      ctx.textAlign = 'center';
-      ctx.font = '13px "JetBrains Mono", monospace';
-      ctx.fillStyle = '#555560';
-      ctx.fillText(`Certificate ID: ${certificateId}`, width / 2, height * 0.94);
+      drawTextOverlays();
     };
 
     templateImg.onerror = () => {
-      // If template image is not present or fails to load, render clean vector certificate
-      drawCustomVectorCertificate();
+      // Fallback clean template if image is still loading
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, width, height);
+      ctx.strokeStyle = '#4285F4';
+      ctx.lineWidth = 12;
+      ctx.strokeRect(40, 40, width - 80, height - 80);
+      drawTextOverlays();
     };
   };
 
   const handleDownloadPNG = () => {
+    if (!participantName.trim()) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     setIsGenerating(true);
 
-    const safeName = (participantName.trim() || 'Participant').replace(/[^a-zA-Z0-9]/g, '_');
-    const imageURL = canvas.toDataURL('image/png');
+    const safeName = participantName.trim().replace(/[^a-zA-Z0-9]/g, '_');
+    const imageURL = canvas.toDataURL('image/png', 1.0);
     const link = document.createElement('a');
-    link.download = `Google_Play_Arena_Certificate_${safeName}.png`;
+    link.download = `Certificate_Participation_${safeName}.png`;
     link.href = imageURL;
     link.click();
 
@@ -268,11 +140,12 @@ export default function CertificateGenerator({ isPostUnlocked, hasCompletedFeedb
   };
 
   const handleDownloadPDF = () => {
+    if (!participantName.trim()) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     setIsGenerating(true);
 
-    const safeName = (participantName.trim() || 'Participant').replace(/[^a-zA-Z0-9]/g, '_');
+    const safeName = participantName.trim().replace(/[^a-zA-Z0-9]/g, '_');
     const imgData = canvas.toDataURL('image/png', 1.0);
 
     // Landscape A4 PDF: 297mm x 210mm
@@ -282,8 +155,14 @@ export default function CertificateGenerator({ isPostUnlocked, hasCompletedFeedb
       format: 'a4',
     });
 
-    pdf.addImage(imgData, 'PNG', 0, 0, 297, 210, undefined, 'FAST');
-    pdf.save(`Google_Play_Arena_Certificate_${safeName}.pdf`);
+    const imgRatio = 2400 / 1730; // ~1.38728
+    let pdfH = 210;
+    let pdfW = 210 * imgRatio; // ~291.33mm
+    let pdfX = (297 - pdfW) / 2; // ~2.83mm margin on both sides
+    let pdfY = 0;
+
+    pdf.addImage(imgData, 'PNG', pdfX, pdfY, pdfW, pdfH, undefined, 'FAST');
+    pdf.save(`Certificate_Participation_${safeName}.pdf`);
 
     triggerConfetti();
     setIsGenerating(false);
@@ -293,14 +172,23 @@ export default function CertificateGenerator({ isPostUnlocked, hasCompletedFeedb
   const triggerConfetti = () => {
     try {
       confetti({
-        particleCount: 80,
-        spread: 70,
+        particleCount: 90,
+        spread: 75,
         origin: { y: 0.6 },
-        colors: ['#8B78B8', '#A8BFA5', '#F5D6C6', '#4285F4'],
+        colors: ['#4285F4', '#EA4335', '#FBBC05', '#34A853', '#8B78B8'],
       });
-    } catch (e) {
-      // Fallback safe
-    }
+    } catch (e) {}
+  };
+
+  const unlockBothFormsDemo = () => {
+    setHasFilledPreSurvey(true);
+    setHasFilledFeedback(true);
+  };
+
+  const resetFormsDemo = () => {
+    setHasFilledPreSurvey(false);
+    setHasFilledFeedback(false);
+    setHasGenerated(false);
   };
 
   return (
@@ -312,6 +200,7 @@ export default function CertificateGenerator({ isPostUnlocked, hasCompletedFeedb
         {/* Header */}
         <div className="p-6 sm:p-8 border-b border-brand-border bg-brand-alt/60">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            
             <div className="flex items-center gap-3.5">
               <div className="w-12 h-12 rounded-2xl bg-brand-lavender-light border border-brand-lavender/30 flex items-center justify-center text-brand-lavender shadow-soft-xs">
                 <Award className="w-6 h-6" />
@@ -327,132 +216,267 @@ export default function CertificateGenerator({ isPostUnlocked, hasCompletedFeedb
             </div>
 
             {/* Dynamic Status Pill */}
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="px-3 py-1 rounded-full text-xs font-mono font-semibold bg-white border border-brand-border text-brand-muted flex items-center gap-1.5 shadow-soft-xs">
+                <ShieldCheck className="w-3.5 h-3.5 text-brand-lavender" />
+                <span>Personalized Credentials Only</span>
+              </span>
+
               <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold ${
-                isPostUnlocked
+                isBothFormsFilled
                   ? 'bg-brand-sage-light text-[#4E6B4A] border border-brand-sage'
                   : 'bg-brand-peach-light text-[#A6634E] border border-brand-peach'
               }`}>
-                {isPostUnlocked ? (
+                {isBothFormsFilled ? (
                   <>
                     <CheckCircle2 className="w-3.5 h-3.5 text-brand-sage" />
-                    <span>Unlocked • Ready to Generate</span>
+                    <span>Unlocked & Verified</span>
                   </>
                 ) : (
                   <>
                     <Lock className="w-3.5 h-3.5 text-[#A6634E]" />
-                    <span>Unlocks After Google Meet Session</span>
+                    <span>Locked (Complete Both Forms)</span>
                   </>
                 )}
               </span>
             </div>
+
           </div>
         </div>
 
         {/* Content Body */}
         <div className="p-6 sm:p-8">
-          {!isPostUnlocked ? (
-            /* LOCKED STATE VIEW */
-            <div className="text-center py-8 max-w-lg mx-auto">
-              <div className="w-16 h-16 mx-auto rounded-2xl bg-brand-alt border border-brand-border flex items-center justify-center text-brand-muted mb-4 shadow-soft-xs">
-                <Lock className="w-8 h-8 text-brand-lavender/70" />
-              </div>
-              <h4 className="font-display font-bold text-lg text-brand-text mb-2">
-                Certificate Generation Opens After Google Meet
-              </h4>
-              <p className="text-xs text-brand-muted leading-relaxed mb-6">
-                To receive your verified Google Student Ambassador Certificate:
-              </p>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-left mb-6">
-                <div className="p-3.5 rounded-xl bg-brand-alt border border-brand-border">
-                  <span className="text-[10px] font-mono font-bold text-brand-lavender block mb-1">STEP 1</span>
-                  <p className="text-xs font-semibold text-brand-text">Complete Pre-Survey</p>
-                  <p className="text-[11px] text-brand-muted mt-0.5">Registers your attendance</p>
+          
+          {!isBothFormsFilled ? (
+            /* ========================================================
+               LOCKED STATE: FORM GATING PROGRESS CHECKLIST
+               ======================================================== */
+            <div className="py-4 max-w-2xl mx-auto">
+              
+              <div className="text-center mb-8">
+                <div className="w-16 h-16 mx-auto rounded-2xl bg-brand-peach-light border border-brand-peach flex items-center justify-center text-[#A6634E] mb-3.5 shadow-soft-xs">
+                  <Lock className="w-8 h-8" />
                 </div>
-                <div className="p-3.5 rounded-xl bg-brand-alt border border-brand-border">
-                  <span className="text-[10px] font-mono font-bold text-brand-sage block mb-1">STEP 2</span>
-                  <p className="text-xs font-semibold text-brand-text">Pitch in Google Meet</p>
-                  <p className="text-[11px] text-brand-muted mt-0.5">60s concept pitch</p>
-                </div>
-                <div className="p-3.5 rounded-xl bg-brand-alt border border-brand-border">
-                  <span className="text-[10px] font-mono font-bold text-[#A6634E] block mb-1">STEP 3</span>
-                  <p className="text-xs font-semibold text-brand-text">Submit Feedback</p>
-                  <p className="text-[11px] text-brand-muted mt-0.5">Unlocks certificate</p>
-                </div>
+                <h4 className="font-display font-black text-xl text-brand-text mb-2">
+                  Complete Both Forms to Unlock Your Certificate
+                </h4>
+                <p className="text-xs sm:text-sm text-brand-muted leading-relaxed max-w-md mx-auto">
+                  Per official Google Student Ambassador guidelines, certificate generation becomes available once both the Pre-Survey and Feedback forms are submitted.
+                </p>
               </div>
 
-              <div className="p-4 rounded-xl bg-brand-lavender-light/60 border border-brand-lavender/30 flex items-center justify-center gap-2 text-xs text-brand-lavender font-mono font-semibold">
-                <Calendar className="w-4 h-4" />
-                <span>Certificate will be stamped with the live date: {currentDate}</span>
+              {/* Sequential Progress Cards */}
+              <div className="space-y-3 mb-8">
+                
+                {/* Step 1 Check */}
+                <div className={`p-4 rounded-2xl border flex items-center justify-between gap-3 transition-colors ${
+                  hasFilledPreSurvey 
+                    ? 'bg-brand-sage-light/40 border-brand-sage text-[#4E6B4A]' 
+                    : 'bg-white border-brand-border text-brand-text'
+                }`}>
+                  <div className="flex items-center gap-3">
+                    <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-mono font-bold text-xs ${
+                      hasFilledPreSurvey 
+                        ? 'bg-brand-sage text-white' 
+                        : 'bg-brand-lavender-light text-brand-lavender border border-brand-lavender/30'
+                    }`}>
+                      {hasFilledPreSurvey ? '✓' : '1'}
+                    </div>
+                    <div>
+                      <h5 className="font-display font-bold text-sm">
+                        Step 1: Pre-Survey Form
+                      </h5>
+                      <p className="text-[11px] text-brand-muted">
+                        Mandatory to register event attendance and unlock Step 2.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    {hasFilledPreSurvey ? (
+                      <span className="text-xs font-mono font-bold text-[#4E6B4A] flex items-center gap-1">
+                        <CheckCircle2 className="w-4 h-4 text-brand-sage" />
+                        <span>Completed</span>
+                      </span>
+                    ) : (
+                      <button
+                        onClick={() => setHasFilledPreSurvey(true)}
+                        className="px-3 py-1.5 rounded-lg text-xs font-mono font-bold btn-primary"
+                      >
+                        Complete Step 1
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                {/* Step 2 Check */}
+                <div className={`p-4 rounded-2xl border flex items-center justify-between gap-3 transition-colors ${
+                  hasFilledFeedback 
+                    ? 'bg-brand-sage-light/40 border-brand-sage text-[#4E6B4A]' 
+                    : hasFilledPreSurvey 
+                      ? 'bg-white border-brand-peach text-brand-text' 
+                      : 'bg-brand-alt/60 border-brand-border text-brand-muted opacity-80'
+                }`}>
+                  <div className="flex items-center gap-3">
+                    <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-mono font-bold text-xs ${
+                      hasFilledFeedback 
+                        ? 'bg-brand-sage text-white' 
+                        : hasFilledPreSurvey 
+                          ? 'bg-brand-peach-light text-[#8C5542] border border-brand-peach' 
+                          : 'bg-brand-alt text-brand-muted border border-brand-border'
+                    }`}>
+                      {hasFilledFeedback ? '✓' : hasFilledPreSurvey ? '2' : <Lock className="w-3.5 h-3.5" />}
+                    </div>
+                    <div>
+                      <h5 className="font-display font-bold text-sm">
+                        Step 2: Feedback Form
+                      </h5>
+                      <p className="text-[11px] text-brand-muted">
+                        {!hasFilledPreSurvey 
+                          ? 'Locked until you complete Step 1 (Pre-Survey).' 
+                          : 'Submit your Google Doc pitch link and event feedback.'}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    {hasFilledFeedback ? (
+                      <span className="text-xs font-mono font-bold text-[#4E6B4A] flex items-center gap-1">
+                        <CheckCircle2 className="w-4 h-4 text-brand-sage" />
+                        <span>Completed</span>
+                      </span>
+                    ) : hasFilledPreSurvey ? (
+                      <button
+                        onClick={() => setHasFilledFeedback(true)}
+                        className="px-3 py-1.5 rounded-lg text-xs font-mono font-bold btn-peach"
+                      >
+                        Complete Step 2
+                      </button>
+                    ) : (
+                      <span className="text-xs font-mono text-brand-muted flex items-center gap-1">
+                        <Lock className="w-3.5 h-3.5" />
+                        <span>Locked</span>
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Step 3: Certificate Form */}
+                <div className="p-4 rounded-2xl border border-brand-border bg-brand-alt/50 flex items-center justify-between gap-3 opacity-90">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-xl bg-brand-alt border border-brand-border flex items-center justify-center text-brand-muted">
+                      <Lock className="w-3.5 h-3.5" />
+                    </div>
+                    <div>
+                      <h5 className="font-display font-bold text-sm text-brand-muted">
+                        Step 3: Certificate Generation Form
+                      </h5>
+                      <p className="text-[11px] text-brand-muted">
+                        Generates high-res PDF stamped with your personalized name and date ({currentDate}).
+                      </p>
+                    </div>
+                  </div>
+
+                  <span className="text-xs font-mono text-brand-muted flex items-center gap-1">
+                    <Lock className="w-3.5 h-3.5" />
+                    <span>Locked</span>
+                  </span>
+                </div>
+
               </div>
+
+              {/* Instant Localhost Demo Controls */}
+              <div className="p-4 rounded-2xl bg-brand-lavender-light/40 border border-brand-lavender/30 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+                <div className="flex items-center gap-2 text-brand-lavender font-semibold">
+                  <Sparkles className="w-4 h-4 shrink-0" />
+                  <span>Localhost Demo Mode: Test certificate generator instantly</span>
+                </div>
+                
+                <div className="flex items-center gap-2 w-full sm:w-auto">
+                  <button
+                    type="button"
+                    onClick={unlockBothFormsDemo}
+                    className="flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs font-bold font-display uppercase tracking-wider btn-primary shadow-soft-xs text-center"
+                  >
+                    ⚡ Demo: Unlock Both Forms
+                  </button>
+                </div>
+              </div>
+
             </div>
           ) : (
-            /* UNLOCKED GENERATOR VIEW */
+            /* ========================================================
+               UNLOCKED STATE: LIVE CERTIFICATE GENERATOR
+               ======================================================== */
             <div className="space-y-6">
               
-              {/* Feedback Confirmation Banner */}
-              <div className="p-4 rounded-2xl bg-brand-peach-light/50 border border-brand-peach/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              {/* Unlocked Banner */}
+              <div className="p-4 rounded-2xl bg-brand-sage-light/60 border border-brand-sage flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                 <div className="flex items-center gap-2.5">
-                  <FileText className="w-5 h-5 text-[#8C5542] shrink-0" />
+                  <ShieldCheck className="w-5 h-5 text-brand-sage shrink-0" />
                   <div className="text-xs">
-                    <span className="font-bold text-[#8C5542] block">Requirement: Complete Feedback Form First</span>
+                    <span className="font-bold text-[#4E6B4A] block">
+                      Verification Complete • Certificate Generator Active
+                    </span>
                     <span className="text-brand-muted">
-                      Please make sure you have filled the official Google Feedback Form before generating your certificate.
+                      Both Pre-Survey and Feedback forms have been recorded. Enter your name below to generate your personalized certificate.
                     </span>
                   </div>
                 </div>
 
-                <button
-                  onClick={() => setHasCompletedFeedback(!hasCompletedFeedback)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold flex items-center gap-1.5 transition-colors shrink-0 ${
-                    hasCompletedFeedback 
-                      ? 'bg-brand-sage text-white' 
-                      : 'bg-white border border-brand-border text-brand-text hover:border-brand-peach'
-                  }`}
-                >
-                  <CheckCircle2 className="w-3.5 h-3.5" />
-                  <span>{hasCompletedFeedback ? 'Feedback Completed ✓' : 'I Have Filled Feedback'}</span>
-                </button>
-              </div>
-
-              {/* Form Input Section */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-mono text-brand-text font-semibold mb-1.5">
-                    Your Full Name (Appears on Certificate) *
-                  </label>
-                  <input
-                    type="text"
-                    value={participantName}
-                    onChange={(e) => setParticipantName(e.target.value)}
-                    placeholder="e.g. Jane Doe"
-                    className="w-full px-4 py-3 rounded-xl bg-brand-alt border border-brand-border text-brand-text text-sm font-sans focus:border-brand-lavender focus:bg-white focus:outline-none transition-colors"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-mono text-brand-text font-semibold mb-1.5">
-                    College / Institution (Optional)
-                  </label>
-                  <input
-                    type="text"
-                    value={collegeName}
-                    onChange={(e) => setCollegeName(e.target.value)}
-                    placeholder="e.g. University School of Engineering"
-                    className="w-full px-4 py-3 rounded-xl bg-brand-alt border border-brand-border text-brand-text text-sm font-sans focus:border-brand-lavender focus:bg-white focus:outline-none transition-colors"
-                  />
+                <div className="flex items-center gap-2 shrink-0">
+                  <button
+                    onClick={resetFormsDemo}
+                    className="px-2.5 py-1 rounded-lg text-[10px] font-mono text-brand-muted hover:text-brand-text border border-brand-border bg-white transition-colors"
+                    title="Lock forms to test the gating sequence again"
+                  >
+                    ↺ Reset & Test Locking
+                  </button>
                 </div>
               </div>
 
-              {/* Certificate Date & Info Bar */}
-              <div className="flex flex-wrap items-center justify-between text-xs font-mono text-brand-muted gap-2 py-1 border-y border-brand-border">
+              {/* Name Input Controls */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <label className="block text-xs font-mono text-brand-text font-semibold">
+                    Participant Full Name (Stamped on Certificate) *
+                  </label>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setParticipantName('Alex Johnson')}
+                      className="text-[11px] font-mono text-brand-lavender hover:underline"
+                    >
+                      Demo: Alex Johnson
+                    </button>
+                    <span className="text-brand-border">•</span>
+                    <button
+                      type="button"
+                      onClick={() => setParticipantName('Riya P Ladwa')}
+                      className="text-[11px] font-mono text-brand-lavender hover:underline"
+                    >
+                      Demo: Riya P Ladwa
+                    </button>
+                  </div>
+                </div>
+                
+                <input
+                  type="text"
+                  value={participantName}
+                  onChange={(e) => setParticipantName(e.target.value)}
+                  placeholder="Type participant name here (e.g. Jane Doe)..."
+                  className="w-full px-4 py-3 rounded-xl bg-brand-alt border border-brand-border text-brand-text text-sm font-sans focus:border-brand-lavender focus:bg-white focus:outline-none transition-colors"
+                />
+              </div>
+
+              {/* Date & Metadata Bar */}
+              <div className="flex flex-wrap items-center justify-between text-xs font-mono text-brand-muted gap-2 py-2 border-y border-brand-border">
                 <span className="flex items-center gap-1.5 text-brand-lavender font-semibold">
                   <Calendar className="w-3.5 h-3.5" />
-                  <span>Current Issue Date: {currentDate}</span>
+                  <span>Dynamic Date Stamped: <strong>{currentDate}</strong></span>
                 </span>
                 <span className="text-[11px]">
-                  Credential ID: <strong className="text-brand-text">{certificateId}</strong>
+                  Official Signature: <strong className="text-brand-text">Riya P Ladwa (Google Student Ambassador)</strong>
                 </span>
               </div>
 
@@ -460,11 +484,11 @@ export default function CertificateGenerator({ isPostUnlocked, hasCompletedFeedb
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-[11px] font-mono text-brand-muted uppercase tracking-wider font-semibold">
-                    Live Certificate Preview
+                    Live Certificate Preview (Personalized)
                   </span>
                   <span className="text-[10px] font-mono text-brand-sage font-bold flex items-center gap-1">
                     <Sparkles className="w-3 h-3" />
-                    <span>Real-time rendering</span>
+                    <span>Real-time render • 2400 x 1730 Native</span>
                   </span>
                 </div>
 
@@ -472,12 +496,12 @@ export default function CertificateGenerator({ isPostUnlocked, hasCompletedFeedb
                   <canvas 
                     ref={canvasRef} 
                     className="w-full h-auto block"
-                    style={{ aspectRatio: '16/9' }}
+                    style={{ aspectRatio: '2400 / 1730' }}
                   />
                 </div>
               </div>
 
-              {/* Download Action Buttons */}
+              {/* Action Buttons: PDF & PNG Only (No Blank Template Link) */}
               <div className="flex flex-col sm:flex-row items-center justify-end gap-3 pt-2">
                 <button
                   onClick={handleDownloadPNG}
@@ -494,25 +518,26 @@ export default function CertificateGenerator({ isPostUnlocked, hasCompletedFeedb
                   className="w-full sm:w-auto px-6 py-3 rounded-xl text-xs font-bold font-display uppercase tracking-wider btn-primary flex items-center justify-center gap-2 disabled:opacity-50 shadow-soft-sm"
                 >
                   <Award className="w-4 h-4" />
-                  <span>Download Official Certificate (PDF)</span>
+                  <span>Download Certificate (PDF)</span>
                 </button>
               </div>
 
               {!participantName.trim() && (
-                <p className="text-[11px] font-mono text-center text-brand-muted">
-                  Type your name above to enable certificate download.
+                <p className="text-[11px] font-mono text-center text-brand-peach">
+                  ⚠️ Please enter a participant name above to enable certificate generation.
                 </p>
               )}
 
               {hasGenerated && (
                 <div className="p-3 rounded-xl bg-brand-sage-light border border-brand-sage text-[#4E6B4A] text-xs font-mono text-center flex items-center justify-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-brand-sage" />
-                  <span>Certificate successfully generated and downloaded! Congratulations!</span>
+                  <span>Certificate successfully generated with dynamic date ({currentDate})!</span>
                 </div>
               )}
 
             </div>
           )}
+
         </div>
 
       </div>

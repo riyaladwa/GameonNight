@@ -41,8 +41,8 @@ export const EVENT_CONFIG = {
   // The UI will gracefully disable the button and show "Link will be announced soon".
   PRE_SURVEY_URL: "https://producttrialsurvey.geministudentambassador.com/",       // Official Pre-Event Survey (ENABLED)
   POST_SURVEY_URL: "https://producttrialfeedback.geministudentambassador.com/",     // Official Post-Event Feedback & Submission
-  POST_SURVEY_UNLOCKED: false, // For now, ONLY Pre-Survey is enabled. Post-Survey unlocks after the Google Meet session.
-  GOOGLE_MEET_URL: "",      // Official Google Meet link for the live Game On Night session
+  POST_SURVEY_UNLOCKED: true, // Feedback & Post-Survey form unlocked for participants
+  GOOGLE_MEET_URL: "https://meet.google.com/wqr-gakm-xok",      // Official Google Meet link for the live Game On Night session
   EVENT_GUIDELINES_URL: "", // Optional official Google Docs/Drive link for detailed guidelines
 
   // Certificate & Reward Official Settings
